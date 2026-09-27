@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Keep Flame - Sức Khỏe & Dinh Dưỡng</title>
+  <title>Keep Flame - Healthy Couple</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
     :root {
       --primary: #22c55e;
@@ -79,20 +80,25 @@
     .badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .badge-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 12px; text-align: center; opacity: 0.5; }
     .badge-item.unlocked { opacity: 1; border-color: var(--primary); background: var(--primary-light); }
+
+    .calendar-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; text-align: center; }
+    .cal-node { padding: 10px; border-radius: 10px; background: #f1f5f9; color: var(--text-main); font-weight: 700; font-size: 11px; cursor: pointer; }
+    .cal-node.active-day { background: var(--primary); color: white; }
+    .cal-node.done { background: var(--primary-light); color: var(--primary-dark); }
   </style>
 </head>
 <body>
 
   <div class="app-container">
 
-    <!-- 1. MỞ APP - TRANG CHÀO -->
-    <div id="screen-welcome" class="screen active" style="justify-content: center; text-align: center;">
+    <!-- KHUNG 1: TRANG CHÀO (WELCOME & HƠN NỮA) -->
+    <div id="screen-welcome" class="screen active" style="justify-content: center; text-align: center; background: linear-gradient(180deg, #dcfce7 0%, #f8fafc 100%);">
       <div style="font-size: 64px; margin-bottom: 10px;">🔥🐻🐱</div>
-      <h1 style="font-size: 28px; font-weight: 800; color: var(--primary-dark); margin-bottom: 6px;">KEEP FLAME</h1>
-      <p style="color: var(--text-sub); font-size: 13px; margin-bottom: 24px;">Cùng nhau giữ ngọn lửa sức khỏe mỗi ngày!</p>
+      <h1 style="font-size: 28px; font-weight: 800; color: var(--primary-dark); margin-bottom: 6px;">Healthy Couple</h1>
+      <p style="color: var(--text-sub); font-size: 13px; margin-bottom: 24px;">Cùng nhau khỏe mạnh - Cùng nhau gắn kết!</p>
       
       <div class="card" style="text-align: left; margin-bottom: 16px;">
-        <label style="font-size: 12px; font-weight: 700; color: var(--text-sub);">CHỌN SỐ NGƯỜI DÙNG</label>
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-sub);">CHỌN CHẾ ĐỘ SỬ DỤNG</label>
         <div style="display: flex; gap: 10px; margin-top: 10px;">
           <div class="gender-card active" id="mode-1" onclick="selectMode(1)" style="flex:1;">
             <div style="font-size: 20px;">👤</div>
@@ -105,14 +111,14 @@
         </div>
       </div>
 
-      <button class="btn-primary" onclick="startSetup()">[ Bắt đầu ] 🚀</button>
+      <button class="btn-primary" onclick="startSetup()">Bắt đầu ngay 🚀</button>
     </div>
 
-    <!-- 2. NHẬP THÔNG TIN CƠ BẢN -->
+    <!-- KHUNG 2: NHẬP THÔNG TIN CƠ THỂ -->
     <div id="screen-setup" class="screen">
       <div class="header">
         <div class="back-btn" onclick="goToScreen('screen-welcome')"><i class="fa-solid fa-chevron-left"></i></div>
-        <div class="header-title" id="setup-title">Thông tin Người 1</div>
+        <div class="header-title" id="setup-title">1. Thông tin cơ thể</div>
         <div class="mascot">🐻</div>
       </div>
 
@@ -143,19 +149,45 @@
         </div>
       </div>
 
-      <button class="btn-primary" onclick="savePersonSetup()">[ Tiếp tục ] ➔</button>
+      <button class="btn-primary" onclick="savePersonSetup()">Tiếp theo ➔</button>
     </div>
 
-    <!-- 3. MỤC TIÊU & TỐC ĐỘ -->
-    <div id="screen-goal" class="screen">
+    <!-- KHUNG 3: KẾT QUẢ BMI / BMR / TDEE -->
+    <div id="screen-results" class="screen">
       <div class="header">
         <div class="back-btn" onclick="goToScreen('screen-setup')"><i class="fa-solid fa-chevron-left"></i></div>
-        <div class="header-title">Chọn mục tiêu</div>
+        <div class="header-title">2. Kết quả sức khỏe</div>
         <div class="mascot">🐱</div>
       </div>
 
-      <div class="card" style="background: var(--primary-light);">
-        <div style="font-size: 13px; font-weight: 700; color: var(--primary-dark);" id="goal-calc-info">BMI: -- | TDEE: -- kcal</div>
+      <div class="card" style="display: flex; justify-content: space-around; text-align: center;">
+        <div>
+          <div style="font-size: 11px; color: var(--text-sub);">BMI</div>
+          <div id="res-bmi" style="font-size: 26px; font-weight: 800; color: var(--primary);">24.1</div>
+          <div id="res-bmi-text" style="font-size: 10px; font-weight: 700; color: var(--primary-dark);">Bình thường</div>
+        </div>
+        <div style="border-right: 1px solid var(--border);"></div>
+        <div>
+          <div style="font-size: 11px; color: var(--text-sub);">TDEE</div>
+          <div id="res-tdee" style="font-size: 26px; font-weight: 800; color: var(--accent-blue-text);">2,100</div>
+          <div style="font-size: 10px; color: var(--text-sub);">kcal/ngày</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 6px;">KHUÔN CÂN NẶNG & PROTEIN THAM KHẢO</div>
+        <div style="font-size: 13px; font-weight: 600;" id="res-ref-info">Cân nặng phù hợp: 58 - 71 kg | Protein: ~120g/ngày</div>
+      </div>
+
+      <button class="btn-primary" onclick="goToScreen('screen-goal')">Thiết lập mục tiêu ➔</button>
+    </div>
+
+    <!-- KHUNG 4: MỤC TIÊU CHI TIẾT & NGÂN SÁCH -->
+    <div id="screen-goal" class="screen">
+      <div class="header">
+        <div class="back-btn" onclick="goToScreen('screen-results')"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="header-title">3. Mục tiêu chi tiết</div>
+        <div class="mascot">🐻</div>
       </div>
 
       <div class="card">
@@ -166,7 +198,7 @@
           <option value="gain">💪 Tăng cân</option>
         </select>
         <div class="input-group" style="margin-top: 10px;"><label>Cân nặng mục tiêu (kg)</label><input type="number" id="target-weight" class="input-field" value="65" oninput="checkSpeed()"></div>
-        <div class="input-group"><label>Thời gian (ngày)</label><input type="number" id="target-days" class="input-field" value="30" oninput="checkSpeed()"></div>
+        <div class="input-group"><label>Thời gian thực hiện (ngày)</label><input type="number" id="target-days" class="input-field" value="30" oninput="checkSpeed()"></div>
         <div class="input-group">
           <label>Ngân sách ăn uống</label>
           <select id="budget-type" class="input-field">
@@ -178,10 +210,42 @@
 
       <div id="speed-feedback" class="card" style="font-size: 12px; font-weight: 600; display:none;"></div>
 
-      <button class="btn-primary" onclick="finishGoalSetup()">Tạo kế hoạch ngay 🎉</button>
+      <button class="btn-primary" onclick="finishGoalSetup()">Tạo kế hoạch 30 ngày 🎉</button>
     </div>
 
-    <!-- 4. DASHBOARD CHÍNH -->
+    <!-- KHUNG 5: TỔNG QUAN KẾ HOẠCH 30 NGÀY -->
+    <div id="screen-plan-overview" class="screen">
+      <div class="header">
+        <div class="back-btn" onclick="goToScreen('screen-goal')"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="header-title">Kế hoạch 30 ngày</div>
+        <div class="mascot">🐱</div>
+      </div>
+
+      <div class="card" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white;">
+        <div style="font-size: 13px; opacity: 0.9;">Mục tiêu hàng ngày</div>
+        <div style="font-size: 28px; font-weight: 800; margin: 4px 0;" id="overview-target-cal">1,650 kcal</div>
+        <div style="font-size: 12px; opacity: 0.9;" id="overview-target-pro">Protein: ~120 g/ngày</div>
+      </div>
+
+      <button class="btn-primary" onclick="goToScreen('screen-dashboard')">Vào Nhật ký hôm nay 🚀</button>
+    </div>
+
+    <!-- KHUNG 6: LỊCH 30 NGÀY CHECK-IN -->
+    <div id="screen-calendar" class="screen" style="padding-bottom:80px;">
+      <div class="header">
+        <div class="header-title">Lịch 30 ngày Keep Flame</div>
+        <div class="mascot">📅</div>
+      </div>
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; font-weight:700;">
+          <span>Tiến độ Check-in</span>
+          <span style="color:var(--primary)" id="cal-progress-text">1 / 30 Ngày</span>
+        </div>
+        <div class="calendar-grid" id="cal-days-grid"></div>
+      </div>
+    </div>
+
+    <!-- KHUNG 7: HOẠT ĐỘNG HÔM NAY (MÀN HÌNH CHÍNH DASHBOARD) -->
     <div id="screen-dashboard" class="screen" style="padding-bottom: 80px;">
       <div class="user-switcher" id="dash-user-switcher" style="display:none;">
         <div class="user-tab active" id="tab-u1" onclick="switchUserTab(0)">👤 Người 1</div>
@@ -196,23 +260,23 @@
         <div class="mascot">🐻</div>
       </div>
 
-      <!-- Summary Card -->
+      <!-- Calo Summary Card -->
       <div class="card" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white;">
         <div style="display: flex; justify-content: space-between;">
           <div>
             <div style="font-size: 11px; opacity: 0.9;">Calories hôm nay</div>
-            <div style="font-size: 24px; font-weight: 800;" id="dash-cal-num">0 / 1,750 kcal</div>
+            <div style="font-size: 22px; font-weight: 800;" id="dash-cal-num">0 / 1,750 kcal</div>
           </div>
           <div>
             <div style="font-size: 11px; opacity: 0.9;">Protein</div>
-            <div style="font-size: 24px; font-weight: 800;" id="dash-pro-num">0 / 120 g</div>
+            <div style="font-size: 22px; font-weight: 800;" id="dash-pro-num">0 / 120 g</div>
           </div>
         </div>
       </div>
 
-      <!-- Quick Actions / Tracker -->
+      <!-- Water Tracker -->
       <div class="card">
-        <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px;">💧 Nước hôm nay (<span id="water-count">0</span>/8 ly)</div>
+        <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px;">💧 Uống nước (<span id="water-count">0</span>/8 ly)</div>
         <div class="water-grid" id="water-grid-box"></div>
       </div>
 
@@ -228,7 +292,7 @@
       <!-- Daily Checklist -->
       <div class="card">
         <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px;">☑️ Checklist ngày</div>
-        <div style="display:flex; flex-direction:column; gap:6px; font-size:12px;" id="checklist-box">
+        <div style="display:flex; flex-direction:column; gap:8px; font-size:12px;" id="checklist-box">
           <label><input type="checkbox" onchange="toggleCheck(0)"> Đạt Calories mục tiêu</label>
           <label><input type="checkbox" onchange="toggleCheck(1)"> Đủ Protein</label>
           <label><input type="checkbox" onchange="toggleCheck(2)"> Uống đủ 8 ly nước</label>
@@ -238,7 +302,7 @@
       </div>
     </div>
 
-    <!-- 5. NHẬP MÓN ĂN (DATABASE & TỰ NHẬP) -->
+    <!-- KHUNG 8: SỔ TAY THỨC ĂN & GỢI Ý BỮA ĂN -->
     <div id="screen-add-food" class="screen">
       <div class="header">
         <div class="back-btn" onclick="goToScreen('screen-dashboard')"><i class="fa-solid fa-chevron-left"></i></div>
@@ -260,7 +324,7 @@
       </div>
 
       <div class="card">
-        <label style="font-size: 12px; font-weight: 700; color: var(--text-sub);">HOẶC TỰ NHẬP MÓN ĂN</label>
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-sub);">TỰ NHẬP MÓN ĂN & CHẾ BIẾN</label>
         <div class="input-group" style="margin-top:6px;"><label>Tên món</label><input type="text" id="food-name" class="input-field" placeholder="Ví dụ: Bún chả"></div>
         <div style="display:flex; gap:8px;">
           <div class="input-group" style="flex:1;"><label>Kcal ước tính</label><input type="number" id="food-cal" class="input-field" value="400"></div>
@@ -269,62 +333,154 @@
       </div>
 
       <button class="btn-primary" onclick="addFoodItem()">Lưu món ăn 🥗</button>
-    </div>
-
-    <!-- 6. LỊCH 30 NGÀY -->
-    <div id="screen-calendar" class="screen" style="padding-bottom:80px;">
+<!-- KHUNG 9: NHẬP HOẠT ĐỘNG VẬN ĐỘNG / ĐI BỘ -->
+    <div id="screen-exercise" class="screen">
       <div class="header">
-        <div class="header-title">Lịch 30 ngày Keep Flame</div>
-        <div class="mascot">📅</div>
+        <div class="back-btn" onclick="goToScreen('screen-dashboard')"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="header-title">Ghi nhận Vận động</div>
+        <div class="mascot">🏃</div>
       </div>
+
       <div class="card">
-        <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:8px; text-align:center;" id="cal-days-grid"></div>
+        <div class="input-group">
+          <label>Loại hoạt động</label>
+          <select id="exercise-type" class="input-field">
+            <option value="walk">🚶 Đi bộ</option>
+            <option value="run">🏃 Chạy bộ</option>
+            <option value="gym">🏋️ Tập Gym / Bơi / YOGA</option>
+            <option value="sports">⚽ Đá bóng / Cầu lông</option>
+          </select>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <div class="input-group" style="flex:1;"><label>Thời gian (phút)</label><input type="number" id="exercise-min" class="input-field" value="30"></div>
+          <div class="input-group" style="flex:1;"><label>Kcal đốt cháy</label><input type="number" id="exercise-cal" class="input-field" value="150"></div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="addExerciseLog()">Hoàn thành bài tập ✓</button>
+    </div>
+
+    <!-- KHUNG 10: UPLOAD ẢNH MINH CHỨNG HÀNG NGÀY -->
+    <div id="screen-proof" class="screen">
+      <div class="header">
+        <div class="back-btn" onclick="goToScreen('screen-dashboard')"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="header-title">Ảnh Minh Chứng</div>
+        <div class="mascot">📸</div>
+      </div>
+
+      <div class="card" style="text-align: center; border: 2px dashed var(--border); padding: 30px;">
+        <i class="fa-solid fa-camera" style="font-size: 36px; color: var(--text-sub); margin-bottom: 10px;"></i>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Tải ảnh bữa ăn hoặc Screenshot bước chân hôm nay</p>
+        <input type="file" id="proof-image-input" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+        <button class="btn-primary" style="background: var(--accent-blue-text);" onclick="document.getElementById('proof-image-input').click()">Chọn ảnh từ máy 🖼️</button>
+      </div>
+
+      <div class="card" id="proof-preview-card" style="display:none; text-align:center;">
+        <img id="proof-preview-img" src="" style="max-width: 100%; border-radius: 12px; max-height: 200px; object-fit: cover;">
+        <p style="font-size: 11px; color: var(--primary-dark); font-weight: 700; margin-top: 6px;">📸 Đã lưu ảnh minh chứng hôm nay!</p>
       </div>
     </div>
 
-    <!-- 7. THÀNH TÍCH (ACHIEVEMENTS) -->
-    <div id="screen-achievements" class="screen" style="padding-bottom:80px;">
+    <!-- KHUNG 11: THEO DÕI CÂN NẶNG & LỊCH SỬ -->
+    <div id="screen-weight" class="screen">
+      <div class="header">
+        <div class="back-btn" onclick="goToScreen('screen-dashboard')"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="header-title">Cân nặng & Tiến trình</div>
+        <div class="mascot">⚖️</div>
+      </div>
+
+      <div class="card">
+        <div class="input-group">
+          <label>Nhập cân nặng hôm nay (kg)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="number" id="input-daily-weight" class="input-field" placeholder="Ví dụ: 69.5" step="0.1">
+            <button class="btn-primary" style="width: auto; margin-top:0; padding: 0 16px;" onclick="addWeightLog()">Lưu</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 13px; font-weight: 700; margin-bottom: 10px;">Lịch sử cân nặng</div>
+        <div id="weight-history-list" style="font-size: 12px; color: var(--text-sub);">Chưa có dữ liệu ghi nhận.</div>
+      </div>
+    </div>
+
+    <!-- KHUNG 12: BÁO CÁO TỔNG KẾT 30 NGÀY -->
+    <div id="screen-report" class="screen" style="padding-bottom: 80px;">
+      <div class="header">
+        <div class="header-title">Báo cáo 30 ngày 🎉</div>
+        <div class="mascot">📊</div>
+      </div>
+
+      <div class="card" style="text-align: center; background: linear-gradient(180deg, #dcfce7 0%, #ffffff 100%);">
+        <div style="font-size: 40px; margin-bottom: 6px;">🏆</div>
+        <h3 style="color: var(--primary-dark); margin-bottom: 4px;">30 DAYS COMPLETE!</h3>
+        <p style="font-size: 12px; color: var(--text-sub);" id="report-summary-text">Bạn đã duy trì ngọn lửa sức khỏe rất xuất sắc!</p>
+      </div>
+
+      <div class="card" id="report-details-box" style="font-size: 13px; line-height: 1.8;">
+        <!-- JS render thông tin báo cáo -->
+      </div>
+    </div>
+
+    <!-- KHUNG 13: THÀNH TÍCH & HUY HIỆU (ACHIEVEMENTS) -->
+    <div id="screen-achievements" class="screen" style="padding-bottom: 80px;">
       <div class="header">
         <div class="header-title">Thành tích & Huy hiệu</div>
         <div class="mascot">🏆</div>
       </div>
+
       <div class="badge-grid">
         <div class="badge-item unlocked">
           <div style="font-size:28px;">🔥</div>
-          <div style="font-weight:700; font-size:12px;">Khởi đầu tốt</div>
-          <div style="font-size:10px; color:var(--text-sub);">Tạo tài khoản</div>
+          <div style="font-weight:700; font-size:12px;">3-Day Flame</div>
+          <div style="font-size:10px; color:var(--text-sub);">Hoàn thành 3 ngày</div>
         </div>
-        <div class="badge-item">
+        <div class="badge-item unlocked">
           <div style="font-size:28px;">💪</div>
           <div style="font-weight:700; font-size:12px;">Protein Master</div>
           <div style="font-size:10px; color:var(--text-sub);">Đạt protein 7 ngày</div>
         </div>
-        <div class="badge-item">
+        <div class="badge-item unlocked">
           <div style="font-size:28px;">🥛</div>
-          <div style="font-weight:700; font-size:12px;">Thánh uống nước</div>
-          <div style="font-size:10px; color:var(--text-sub);">Uống 8 ly nước</div>
+          <div style="font-weight:700; font-size:12px;">Uống đủ nước</div>
+          <div style="font-size:10px; color:var(--text-sub);">Đạt 8 ly nước</div>
         </div>
         <div class="badge-item">
           <div style="font-size:28px;">👑</div>
-          <div style="font-weight:700; font-size:12px;">30-Day Flame</div>
-          <div style="font-size:10px; color:var(--text-sub);">Hoàn thành 30 ngày</div>
+          <div style="font-weight:700; font-size:12px;">30-Day Master</div>
+          <div style="font-size:10px; color:var(--text-sub);">Hoàn thành thử thách</div>
         </div>
       </div>
     </div>
 
-    <!-- 8. CÀI ĐẶT & LƯU DỮ LIỆU -->
-    <div id="screen-settings" class="screen" style="padding-bottom:80px;">
+    <!-- KHUNG 14: HỒ SƠ PROFILE (1 VÀ 2 NGƯỜI) -->
+    <div id="screen-profile" class="screen" style="padding-bottom: 80px;">
+      <div class="header">
+        <div class="header-title">Hồ sơ cá nhân</div>
+        <div class="mascot">👤</div>
+      </div>
+
+      <div class="card" id="profile-info-card">
+        <!-- JS Render thông tin người dùng -->
+      </div>
+    </div>
+
+    <!-- KHUNG 15: CÀI ĐẶT & QUẢN LÝ DỮ LIỆU (LOCALSTORAGE / JSON) -->
+    <div id="screen-settings" class="screen" style="padding-bottom: 80px;">
       <div class="header">
         <div class="header-title">Cài đặt & Dữ liệu</div>
         <div class="mascot">⚙️</div>
       </div>
+
       <div class="card">
-        <button class="btn-primary" style="background:#0284c7; margin-bottom:10px;" onclick="exportJSON()">💾 Xuất dữ liệu (JSON)</button>
-        <button class="btn-primary" style="background:#e11d48;" onclick="resetData()">⚠️ Reset xóa toàn bộ dữ liệu</button>
+        <div style="font-size: 13px; font-weight: 700; margin-bottom: 10px;">Quản lý dữ liệu LocalStorage</div>
+        <button class="btn-primary" style="background: var(--accent-blue-text); margin-bottom: 10px;" onclick="exportJSON()">💾 Xuất dữ liệu ra file (JSON)</button>
+        <button class="btn-primary" style="background: #e11d48;" onclick="resetData()">⚠️ Xóa toàn bộ dữ liệu (Reset)</button>
       </div>
     </div>
 
-    <!-- MAIN NAVBAR -->
+    <!-- MAIN NAVBAR DƯỚI CÙNG -->
     <div class="navbar" id="main-nav">
       <div class="nav-item active" onclick="switchNav('screen-dashboard', this)"><i class="fa-solid fa-house"></i><span>Tổng quan</span></div>
       <div class="nav-item" onclick="switchNav('screen-calendar', this)"><i class="fa-solid fa-calendar-days"></i><span>30 Ngày</span></div>
@@ -333,17 +489,17 @@
     </div>
 
   </div>
-
-  <script>
-    // State storage
+    <script>
+    // System State Storage
     let appState = {
-      mode: 1, // 1 or 2 users
+      mode: 1, // 1: Một mình, 2: Hai người
       activeUserIndex: 0,
       users: []
     };
 
     let tempSetupIndex = 0;
 
+    // Mode Selection (Khung 1)
     function selectMode(m) {
       appState.mode = m;
       document.getElementById('mode-1').classList.toggle('active', m === 1);
@@ -367,6 +523,7 @@
       document.getElementById('setup-female').classList.toggle('active', g === 'female');
     }
 
+    // Save Setup Data (Khung 2)
     function savePersonSetup() {
       let isMale = document.getElementById('setup-male').classList.contains('active');
       let u = {
@@ -375,17 +532,23 @@
         age: parseFloat(document.getElementById('setup-age').value) || 25,
         height: parseFloat(document.getElementById('setup-height').value) || 170,
         weight: parseFloat(document.getElementById('setup-weight').value) || 70,
+        waist: parseFloat(document.getElementById('setup-waist').value) || 0,
         activity: parseFloat(document.getElementById('setup-activity').value) || 1.375,
         water: 0,
+        streak: 1,
         foods: [],
+        exercises: [],
+        weightHistory: [],
+        proofImg: '',
         checks: [false, false, false, false, false]
       };
 
-      // Calc BMR & TDEE
+      // Formula: BMR (Mifflin-St Jeor) & TDEE & BMI
       let bmr = (10 * u.weight) + (6.25 * u.height) - (5 * u.age) + (u.gender === 'male' ? 5 : -161);
       u.bmr = Math.round(bmr);
       u.tdee = Math.round(bmr * u.activity);
-      u.bmi = (u.weight / ((u.height/100)*(u.height/100))).toFixed(1);
+      u.bmi = (u.weight / ((u.height/100) * (u.height/100))).toFixed(1);
+      u.weightHistory.push({ day: 1, weight: u.weight });
 
       appState.users.push(u);
 
@@ -394,17 +557,31 @@
         loadSetupScreenForUser(1);
       } else {
         tempSetupIndex = 0;
-        showGoalScreen();
+        showResultsScreen();
       }
     }
 
-    function showGoalScreen() {
+    // Results Screen (Khung 3)
+    function showResultsScreen() {
       let u = appState.users[0];
-      document.getElementById('goal-calc-info').innerText = `BMI: ${u.bmi} | TDEE: ${u.tdee.toLocaleString()} kcal/ngày`;
-      checkSpeed();
-      goToScreen('screen-goal');
+      document.getElementById('res-bmi').innerText = u.bmi;
+      
+      let bmiText = "Bình thường";
+      if (u.bmi < 18.5) bmiText = "Thiếu cân";
+      else if (u.bmi >= 23 && u.bmi < 25) bmiText = "Tiền béo phì";
+      else if (u.bmi >= 25) bmiText = "Béo phì";
+      document.getElementById('res-bmi-text').innerText = bmiText;
+
+      document.getElementById('res-tdee').innerText = u.tdee.toLocaleString();
+      
+      let minW = Math.round(18.5 * (u.height/100) * (u.height/100));
+      let maxW = Math.round(22.9 * (u.height/100) * (u.height/100));
+      document.getElementById('res-ref-info').innerText = `Khoảng cân nặng tham khảo: ${minW} - ${maxW} kg | Protein: ~${Math.round(u.weight * 1.8)}g/ngày`;
+
+      goToScreen('screen-results');
     }
 
+    // Check Loss Speed (Khung 4)
     function checkSpeed() {
       let type = document.getElementById('goal-type').value;
       let targetW = parseFloat(document.getElementById('target-weight').value) || 65;
@@ -419,16 +596,17 @@
       if (type === 'lose') {
         if (kgPerWeek > 1.0) {
           box.style.background = '#ffedd5'; box.style.color = '#ea580c';
-          box.innerText = `🟠 Giảm ${kgPerWeek.toFixed(1)} kg/tuần là khá nhanh! Nên kéo dài thời gian để đảm bảo sức khỏe.`;
+          box.innerText = `🟠 Mục tiêu này khá cao! Bạn nên cân nhắc kéo dài thời gian để tránh giảm quá nhanh (${kgPerWeek.toFixed(1)} kg/tuần).`;
         } else {
           box.style.background = '#dcfce7'; box.style.color = '#16a34a';
-          box.innerText = `🟢 Tốc độ giảm ${kgPerWeek.toFixed(1)} kg/tuần rất hợp lý và an toàn!`;
+          box.innerText = `🟢 Tốc độ mục tiêu của bạn nằm trong mức tương đối hợp lý (${kgPerWeek.toFixed(1)} kg/tuần).`;
         }
       } else {
         box.style.display = 'none';
       }
     }
 
+    // Finish Goal Setup (Khung 4 & 5)
     function finishGoalSetup() {
       let type = document.getElementById('goal-type').value;
       let targetW = parseFloat(document.getElementById('target-weight').value) || 65;
@@ -439,24 +617,30 @@
         if (type === 'gain') cal += 400;
         u.targetCal = cal;
         u.targetPro = Math.round(u.weight * 1.8);
+        u.targetWeight = targetW;
       });
+
+      document.getElementById('overview-target-cal').innerText = `${appState.users[0].targetCal.toLocaleString()} kcal`;
+      document.getElementById('overview-target-pro').innerText = `Protein: ~${appState.users[0].targetPro} g/ngày`;
 
       saveToStorage();
       renderDashboard();
-      goToScreen('screen-dashboard');
+      goToScreen('screen-plan-overview');
     }
 
+    // Main Dashboard Rendering (Khung 7)
     function renderDashboard() {
       let u = appState.users[appState.activeUserIndex];
       document.getElementById('dash-user-name').innerText = `Hồ sơ: ${u.name}`;
-      
+      document.getElementById('dash-streak-count').innerText = `🔥 Streak: ${u.streak} ngày`;
+
       let sumCal = u.foods.reduce((a, b) => a + b.cal, 0);
       let sumPro = u.foods.reduce((a, b) => a + b.pro, 0);
 
       document.getElementById('dash-cal-num').innerText = `${sumCal} / ${u.targetCal} kcal`;
       document.getElementById('dash-pro-num').innerText = `${sumPro} / ${u.targetPro} g`;
 
-      // Render water
+      // Render Water Tracker (Khung 7)
       document.getElementById('water-count').innerText = u.water;
       let wGrid = document.getElementById('water-grid-box');
       wGrid.innerHTML = '';
@@ -468,15 +652,26 @@
         wGrid.appendChild(cup);
       }
 
-      // Render food list
+      // Render Food Log (Khung 7 & 8)
       let foodBox = document.getElementById('food-log-list');
-      if (u.foods.length === 0) {
+      if (!u.foods || u.foods.length === 0) {
         foodBox.innerHTML = "Chưa nhập món ăn nào hôm nay.";
       } else {
-        foodBox.innerHTML = u.foods.map(f => `<div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>${f.name}</span><b>${f.cal} kcal</b></div>`).join('');
+        foodBox.innerHTML = u.foods.map(f => `
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px; padding-bottom:4px; border-bottom:1px dashed var(--border);">
+            <span>${f.name}</span>
+            <b>${f.cal} kcal (${f.pro}g Pro)</b>
+          </div>
+        `).join('');
       }
 
-      // Render User Switcher
+      // Checkbox sync
+      let checkInputs = document.querySelectorAll('#checklist-box input');
+      checkInputs.forEach((inp, idx) => {
+        inp.checked = u.checks[idx] || false;
+      });
+
+      // User Switcher (Khung 14)
       let switcher = document.getElementById('dash-user-switcher');
       if (appState.mode === 2) {
         switcher.style.display = 'flex';
@@ -487,6 +682,7 @@
       }
 
       renderCalendarGrid();
+      renderProfileAndReports();
     }
 
     function switchUserTab(index) {
@@ -496,6 +692,13 @@
       renderDashboard();
     }
 
+    function toggleCheck(idx) {
+      let u = appState.users[appState.activeUserIndex];
+      u.checks[idx] = !u.checks[idx];
+      saveToStorage();
+    }
+
+    // Auto Fill Food (Khung 8)
     function autoFillFood() {
       let val = document.getElementById('db-food-select').value;
       if (val) {
@@ -518,22 +721,97 @@
       goToScreen('screen-dashboard');
     }
 
+    // Exercise Log (Khung 9)
+    function addExerciseLog() {
+      let min = parseFloat(document.getElementById('exercise-min').value) || 30;
+      let cal = parseFloat(document.getElementById('exercise-cal').value) || 150;
+      let typeText = document.getElementById('exercise-type').options[document.getElementById('exercise-type').selectedIndex].text;
+
+      appState.users[appState.activeUserIndex].exercises.push({ type: typeText, min, cal });
+      saveToStorage();
+      alert(`Đã lưu bài tập: ${typeText} (${min} phút, -${cal} kcal)`);
+      goToScreen('screen-dashboard');
+    }
+
+    // Proof Upload (Khung 10)
+    function handleImageUpload(e) {
+      let file = e.target.files[0];
+      if (file) {
+        let reader = new FileReader();
+        reader.onload = function(evt) {
+          appState.users[appState.activeUserIndex].proofImg = evt.target.result;
+          document.getElementById('proof-preview-img').src = evt.target.result;
+          document.getElementById('proof-preview-card').style.display = 'block';
+          saveToStorage();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Weight Log (Khung 11)
+    function addWeightLog() {
+      let w = parseFloat(document.getElementById('input-daily-weight').value);
+      if (w) {
+        let u = appState.users[appState.activeUserIndex];
+        u.weightHistory.push({ day: u.weightHistory.length + 1, weight: w });
+        u.weight = w;
+        saveToStorage();
+        renderProfileAndReports();
+        alert("Đã cập nhật cân nặng mới!");
+        document.getElementById('input-daily-weight').value = '';
+      }
+    }
+
+    // Calendar Grid (Khung 6)
     function renderCalendarGrid() {
       let grid = document.getElementById('cal-days-grid');
       grid.innerHTML = '';
       for (let i = 1; i <= 30; i++) {
         let d = document.createElement('div');
-        d.style.padding = '10px'; d.style.borderRadius = '10px'; d.style.background = i === 1 ? 'var(--primary)' : '#f1f5f9';
-        d.style.color = i === 1 ? 'white' : 'var(--text-main)'; d.style.fontWeight = '700'; d.style.fontSize = '11px';
+        d.className = `cal-node ${i === 1 ? 'active-day' : ''}`;
         d.innerText = `D${i}`;
         grid.appendChild(d);
       }
     }
 
+    // Profile & Report Rendering (Khung 12 & 14)
+    function renderProfileAndReports() {
+      let u = appState.users[appState.activeUserIndex];
+      if (!u) return;
+
+      // Profile Card
+      let pCard = document.getElementById('profile-info-card');
+      pCard.innerHTML = `
+        <div style="font-weight:700; font-size:15px; margin-bottom:8px;">👤 ${u.name} (${u.gender === 'male' ? 'Nam' : 'Nữ'})</div>
+        <div style="font-size:12px; color:var(--text-sub); line-height:1.6;">
+          <div>• Chiều cao: <b>${u.height} cm</b> | Cân nặng hiện tại: <b>${u.weight} kg</b></div>
+          <div>• Chỉ số BMI: <b>${u.bmi}</b> | TDEE: <b>${u.tdee.toLocaleString()} kcal</b></div>
+          <div>• Calories mục tiêu: <b>${u.targetCal} kcal</b> | Protein: <b>${u.targetPro} g/ngày</b></div>
+        </div>
+      `;
+
+      // Report Details
+      let rBox = document.getElementById('report-details-box');
+      rBox.innerHTML = `
+        <div>• Cân nặng ban đầu: <b>${u.weightHistory[0]?.weight || u.weight} kg</b></div>
+        <div>• Cân nặng hiện tại: <b>${u.weight} kg</b></div>
+        <div>• Tích lũy Streak: <b>${u.streak} ngày liên tiếp</b></div>
+        <div>• Tổng số ly nước đã uống: <b>${u.water} / 8 ly</b></div>
+      `;
+
+      // Weight History List
+      let wBox = document.getElementById('weight-history-list');
+      if (u.weightHistory.length > 0) {
+        wBox.innerHTML = u.weightHistory.map(h => `<div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>Lần ${h.day}</span><b>${h.weight} kg</b></div>`).join('');
+      }
+    }
+
+    // Screen Router & Nav
     function goToScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      document.getElementById('main-nav').style.display = (id.startsWith('screen-dash') || id.startsWith('screen-cal') || id.startsWith('screen-achieve') || id.startsWith('screen-setting')) ? 'flex' : 'none';
+      let navScreens = ['screen-dashboard', 'screen-calendar', 'screen-achievements', 'screen-settings', 'screen-profile', 'screen-report'];
+      document.getElementById('main-nav').style.display = navScreens.includes(id) ? 'flex' : 'none';
     }
 
     function switchNav(id, el) {
@@ -542,18 +820,19 @@
       goToScreen(id);
     }
 
-    function saveToStorage() { localStorage.setItem('keep_flame_data', JSON.stringify(appState)); }
+    // Storage Management (Khung 15)
+    function saveToStorage() { localStorage.setItem('keep_flame_complete_data', JSON.stringify(appState)); }
     function loadFromStorage() {
-      let d = localStorage.getItem('keep_flame_data');
-      if (d) {
-        appState = JSON.parse(d);
+      let data = localStorage.getItem('keep_flame_complete_data');
+      if (data) {
+        appState = JSON.parse(data);
         renderDashboard();
         goToScreen('screen-dashboard');
       }
     }
 
     function exportJSON() {
-      let blob = new Blob([JSON.stringify(appState, null, 2)], {type : 'application/json'});
+      let blob = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json' });
       let a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'keep_flame_backup.json';
@@ -561,14 +840,15 @@
     }
 
     function resetData() {
-      if (confirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu?')) {
-        localStorage.removeItem('keep_flame_data');
+      if (confirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu ứng dụng?')) {
+        localStorage.removeItem('keep_flame_complete_data');
         location.reload();
       }
     }
 
-    // Auto load on start
+    // Auto load state on initialization
     window.onload = loadFromStorage;
   </script>
 </body>
 </html>
+    </div>
