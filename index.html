@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Healthy Couple - Keep Flame</title>
-  <!-- Google Fonts & FontAwesome -->
+  <title>Keep Flame - Sức Khỏe & Dinh Dưỡng</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
   <style>
     :root {
       --primary: #22c55e;
@@ -23,623 +21,554 @@
       --accent-blue: #e0f2fe;
       --accent-blue-text: #0284c7;
       --radius: 20px;
-      --shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+      --shadow: 0 8px 20px rgba(0,0,0,0.04);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #cbd5e1; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
 
-    body {
-      background-color: #cbd5e1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* Mobile Container Mockup */
     .app-container {
-      width: 100%;
-      max-width: 414px;
-      height: 100vh;
-      max-height: 896px;
-      background: var(--bg);
-      position: relative;
-      overflow-y: auto;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-      display: flex;
-      flex-direction: column;
+      width: 100%; max-width: 414px; height: 100vh; max-height: 896px;
+      background: var(--bg); position: relative; overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15); display: flex; flex-direction: column;
     }
 
     @media (min-width: 450px) {
-      .app-container {
-        border-radius: 36px;
-        height: 844px;
-        border: 8px solid #0f172a;
-      }
+      .app-container { border-radius: 36px; height: 844px; border: 8px solid #0f172a; }
     }
 
-    /* Screen Views */
-    .screen {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      animation: fadeIn 0.25s ease-in-out;
-    }
+    .screen { display: none; flex-direction: column; flex: 1; padding: 18px; overflow-y: auto; animation: fadeIn 0.2s ease-in-out; }
+    .screen.active { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-    .screen.active {
-      display: flex;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Common Components */
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .back-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text-main);
-    }
-
-    .header-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .mascot-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--primary-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
+    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .back-btn { background: var(--card-bg); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .header-title { font-size: 17px; font-weight: 700; color: var(--text-main); }
+    .mascot { font-size: 24px; }
 
     .btn-primary {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 16px;
-      border-radius: 16px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      text-align: center;
-      transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-      margin-top: auto;
+      background: var(--primary); color: white; border: none; padding: 14px;
+      border-radius: 16px; font-size: 15px; font-weight: 700; cursor: pointer;
+      width: 100%; text-align: center; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+      margin-top: 12px; transition: opacity 0.2s;
     }
+    .btn-primary:active { opacity: 0.85; }
 
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
+    .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+    .input-group { margin-bottom: 12px; }
+    .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 5px; }
+    .input-field { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 14px; font-weight: 600; outline: none; background: #fff; }
+    
+    .gender-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .gender-card { border: 2px solid var(--border); border-radius: 14px; padding: 12px; text-align: center; cursor: pointer; background: var(--card-bg); }
+    .gender-card.active { border-color: var(--primary); background: var(--primary-light); }
 
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 18px;
-      margin-bottom: 16px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-    }
+    .user-switcher { display: flex; gap: 8px; margin-bottom: 14px; background: #e2e8f0; padding: 4px; border-radius: 12px; }
+    .user-tab { flex: 1; text-align: center; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--text-sub); }
+    .user-tab.active { background: white; color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 
-    .input-group {
-      margin-bottom: 14px;
-    }
+    .navbar { display: none; justify-content: space-around; background: var(--card-bg); padding: 10px 0; border-top: 1px solid var(--border); position: sticky; bottom: 0; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; font-weight: 600; color: var(--text-sub); cursor: pointer; gap: 3px; }
+    .nav-item.active { color: var(--primary); }
+    .nav-item i { font-size: 18px; }
 
-    .input-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-sub);
-      margin-bottom: 6px;
-    }
+    .water-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0; }
+    .water-cup { background: var(--accent-blue); color: var(--accent-blue-text); border-radius: 12px; padding: 12px; text-align: center; font-size: 20px; cursor: pointer; }
+    .water-cup.filled { background: var(--primary); color: white; }
 
-    .input-field {
-      width: 100%;
-      padding: 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text-main);
-      outline: none;
-      transition: border 0.2s;
-    }
-
-    .input-field:focus {
-      border-color: var(--primary);
-    }
-
-    /* Gender Selector */
-    .gender-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .gender-card {
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
-      cursor: pointer;
-      background: var(--card-bg);
-      transition: all 0.2s;
-    }
-
-    .gender-card.active {
-      border-color: var(--primary);
-      background: var(--primary-light);
-    }
-
-    .gender-icon {
-      font-size: 28px;
-      margin-bottom: 6px;
-    }
-
-    /* Goal Selector Cards */
-    .goal-card {
-      border: 2px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      cursor: pointer;
-      background: var(--card-bg);
-    }
-
-    .goal-card.active {
-      border-color: var(--primary);
-      background: var(--primary-light);
-    }
-
-    .goal-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-    }
-
-    /* Bottom Navigation Bar */
-    .navbar {
-      display: flex;
-      justify-content: space-around;
-      background: var(--card-bg);
-      padding: 12px 0;
-      border-top: 1px solid var(--border);
-      position: sticky;
-      bottom: 0;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-sub);
-      cursor: pointer;
-      gap: 4px;
-    }
-
-    .nav-item.active {
-      color: var(--primary);
-    }
-
-    .nav-item i {
-      font-size: 20px;
-    }
-
-    /* Calendar Grid */
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .day-node {
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: #f1f5f9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-sub);
-      cursor: pointer;
-    }
-
-    .day-node.completed {
-      background: var(--primary);
-      color: white;
-    }
-
-    .day-node.active-day {
-      border: 2px solid var(--primary);
-      color: var(--primary);
-    }
-
-    /* Progress Circle */
-    .progress-circle-box {
-      position: relative;
-      width: 140px;
-      height: 140px;
-      margin: 0 auto 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .circle-val {
-      position: absolute;
-      text-align: center;
-    }
-
-    .circle-val h2 {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-
-    .circle-val p {
-      font-size: 11px;
-      color: var(--text-sub);
-    }
+    .badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .badge-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 12px; text-align: center; opacity: 0.5; }
+    .badge-item.unlocked { opacity: 1; border-color: var(--primary); background: var(--primary-light); }
   </style>
 </head>
 <body>
 
   <div class="app-container">
 
-    <!-- SCREEN 1: WELCOME / CHÀO MỪNG -->
-    <div id="screen-welcome" class="screen active" style="justify-content: center; text-align: center; background: linear-gradient(180deg, #e0f2fe 0%, #f8fafc 100%);">
-      <div style="font-size: 60px; margin-bottom: 10px;">🐻🐱</div>
-      <h1 style="font-size: 32px; font-weight: 800; color: #16a34a; margin-bottom: 8px;">Healthy Couple</h1>
-      <p style="color: var(--text-sub); font-size: 15px; margin-bottom: 30px;">Cùng nhau khỏe mạnh - Cùng nhau gắn kết</p>
-      <button class="btn-primary" onclick="goToScreen('screen-info')">Bắt đầu ngay 🚀</button>
+    <!-- 1. MỞ APP - TRANG CHÀO -->
+    <div id="screen-welcome" class="screen active" style="justify-content: center; text-align: center;">
+      <div style="font-size: 64px; margin-bottom: 10px;">🔥🐻🐱</div>
+      <h1 style="font-size: 28px; font-weight: 800; color: var(--primary-dark); margin-bottom: 6px;">KEEP FLAME</h1>
+      <p style="color: var(--text-sub); font-size: 13px; margin-bottom: 24px;">Cùng nhau giữ ngọn lửa sức khỏe mỗi ngày!</p>
+      
+      <div class="card" style="text-align: left; margin-bottom: 16px;">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-sub);">CHỌN SỐ NGƯỜI DÙNG</label>
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <div class="gender-card active" id="mode-1" onclick="selectMode(1)" style="flex:1;">
+            <div style="font-size: 20px;">👤</div>
+            <div style="font-size: 13px; font-weight: 700;">Một mình</div>
+          </div>
+          <div class="gender-card" id="mode-2" onclick="selectMode(2)" style="flex:1;">
+            <div style="font-size: 20px;">👥</div>
+            <div style="font-size: 13px; font-weight: 700;">2 Người</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="startSetup()">[ Bắt đầu ] 🚀</button>
     </div>
 
-    <!-- SCREEN 2: THÔNG TIN CƠ THỂ -->
-    <div id="screen-info" class="screen">
+    <!-- 2. NHẬP THÔNG TIN CƠ BẢN -->
+    <div id="screen-setup" class="screen">
       <div class="header">
         <div class="back-btn" onclick="goToScreen('screen-welcome')"><i class="fa-solid fa-chevron-left"></i></div>
-        <div class="header-title">1. Thông tin cơ thể</div>
-        <div class="mascot-avatar">🐻</div>
-      </div>
-      <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 16px;">Hãy cho mình biết chỉ số thông tin cơ thể để đưa ra lời khuyên chính xác nhất!</p>
-      
-      <div class="gender-grid">
-        <div class="gender-card active" id="gender-male" onclick="selectGender('male')">
-          <div class="gender-icon">👨</div>
-          <div style="font-weight: 700;">Nam</div>
-        </div>
-        <div class="gender-card" id="gender-female" onclick="selectGender('female')">
-          <div class="gender-icon">👩</div>
-          <div style="font-weight: 700;">Nữ</div>
-        </div>
+        <div class="header-title" id="setup-title">Thông tin Người 1</div>
+        <div class="mascot">🐻</div>
       </div>
 
       <div class="card">
         <div class="input-group">
-          <label>Tuổi</label>
-          <input type="number" id="input-age" class="input-field" value="25">
+          <label>Tên / Biệt danh</label>
+          <input type="text" id="setup-name" class="input-field" value="Nguyễn">
         </div>
+        <div class="gender-grid">
+          <div class="gender-card active" id="setup-male" onclick="setSetupGender('male')">👨 Nam</div>
+          <div class="gender-card" id="setup-female" onclick="setSetupGender('female')">👩 Nữ</div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <div class="input-group" style="flex:1;"><label>Tuổi</label><input type="number" id="setup-age" class="input-field" value="25"></div>
+          <div class="input-group" style="flex:1;"><label>Cao (cm)</label><input type="number" id="setup-height" class="input-field" value="170"></div>
+          <div class="input-group" style="flex:1;"><label>Nặng (kg)</label><input type="number" id="setup-weight" class="input-field" value="70"></div>
+        </div>
+        <div class="input-group"><label>Vòng eo (cm) - Không bắt buộc</label><input type="number" id="setup-waist" class="input-field" placeholder="78"></div>
         <div class="input-group">
-          <label>Chiều cao (cm)</label>
-          <input type="number" id="input-height" class="input-field" value="170">
-        </div>
-        <div class="input-group">
-          <label>Cân nặng hiện tại (kg)</label>
-          <input type="number" id="input-weight" class="input-field" value="70">
-        </div>
-      </div>
-
-      <button class="btn-primary" onclick="calculateBMI()">Tiếp theo ➔</button>
-    </div>
-
-    <!-- SCREEN 3: KẾT QUẢ SỨC KHỎE (BMI & TDEE) -->
-    <div id="screen-result" class="screen">
-      <div class="header">
-        <div class="back-btn" onclick="goToScreen('screen-info')"><i class="fa-solid fa-chevron-left"></i></div>
-        <div class="header-title">2. Kết quả sức khỏe</div>
-        <div class="mascot-avatar">🐱</div>
-      </div>
-
-      <div class="card" style="display: flex; justify-content: space-around; text-align: center;">
-        <div>
-          <div style="font-size: 12px; color: var(--text-sub);">BMI</div>
-          <div id="res-bmi" style="font-size: 28px; font-weight: 800; color: #22c55e;">24.1</div>
-          <div id="res-bmi-status" style="font-size: 11px; font-weight: 700; color: #16a34a;">Bình thường</div>
-        </div>
-        <div style="border-right: 1px solid var(--border);"></div>
-        <div>
-          <div style="font-size: 12px; color: var(--text-sub);">TDEE</div>
-          <div id="res-tdee" style="font-size: 28px; font-weight: 800; color: #0284c7;">2,100</div>
-          <div style="font-size: 11px; color: var(--text-sub);">kcal/ngày</div>
-        </div>
-      </div>
-
-      <h4 style="margin-bottom: 12px; font-size: 15px;">Bạn muốn làm gì?</h4>
-
-      <div class="goal-card active" onclick="selectGoal(this, 'lose')">
-        <div class="goal-icon" style="background: #ffedd5; color: #ea580c;">🔥</div>
-        <div>
-          <div style="font-weight: 700;">Giảm cân</div>
-          <div style="font-size: 12px; color: var(--text-sub);">Giảm mỡ, thon gọn vóc dáng</div>
-        </div>
-      </div>
-
-      <div class="goal-card" onclick="selectGoal(this, 'maintain')">
-        <div class="goal-icon" style="background: #dcfce7; color: #16a34a;">⚖️</div>
-        <div>
-          <div style="font-weight: 700;">Giữ cân</div>
-          <div style="font-size: 12px; color: var(--text-sub);">Duy trì vóc dáng hiện tại</div>
-        </div>
-      </div>
-
-      <div class="goal-card" onclick="selectGoal(this, 'gain')">
-        <div class="goal-icon" style="background: #e0f2fe; color: #0284c7;">💪</div>
-        <div>
-          <div style="font-weight: 700;">Tăng cân</div>
-          <div style="font-size: 12px; color: var(--text-sub);">Tăng cơ bắp, cải thiện thể trạng</div>
-        </div>
-      </div>
-
-      <button class="btn-primary" onclick="goToScreen('screen-plan-setup')">Tiếp tục ➔</button>
-    </div>
-
-    <!-- SCREEN 4: MỤC TIÊU CHI TIẾT -->
-    <div id="screen-plan-setup" class="screen">
-      <div class="header">
-        <div class="back-btn" onclick="goToScreen('screen-result')"><i class="fa-solid fa-chevron-left"></i></div>
-        <div class="header-title">3. Mục tiêu chi tiết</div>
-        <div class="mascot-avatar">🐻</div>
-      </div>
-
-      <div class="card">
-        <div class="input-group">
-          <label>Cân nặng mục tiêu (kg)</label>
-          <input type="number" id="input-target-weight" class="input-field" value="65">
-        </div>
-        <div class="input-group">
-          <label>Thời gian thực hiện</label>
-          <input type="text" class="input-field" value="1 tháng (30 ngày)" readonly>
-        </div>
-        <div class="input-group">
-          <label>Cường độ vận động</label>
-          <select class="input-field">
-            <option>Nhẹ nhàng (1-3 buổi/tuần)</option>
-            <option selected>Vừa phải (3-5 buổi/tuần)</option>
-            <option>Nhiều (6-7 buổi/tuần)</option>
+          <label>Mức độ hoạt động</label>
+          <select id="setup-activity" class="input-field">
+            <option value="1.2">🛋️ Ít vận động</option>
+            <option value="1.375" selected>🚶 Nhẹ (1-3 buổi/tuần)</option>
+            <option value="1.55">🏃 Trung bình (3-5 buổi/tuần)</option>
+            <option value="1.725">🏋️ Nhiều (6-7 buổi/tuần)</option>
+            <option value="1.9">🔥 Rất nhiều (Vận động viên)</option>
           </select>
         </div>
       </div>
 
-      <button class="btn-primary" onclick="generatePlan()">Tạo kế hoạch 30 ngày 🎉</button>
+      <button class="btn-primary" onclick="savePersonSetup()">[ Tiếp tục ] ➔</button>
     </div>
 
-    <!-- SCREEN 5: TỔNG QUAN KẾ HOẠCH & MÀN HÌNH CHÍNH (MAIN DASHBOARD) -->
-    <div id="screen-dashboard" class="screen" style="padding-bottom: 70px;">
+    <!-- 3. MỤC TIÊU & TỐC ĐỘ -->
+    <div id="screen-goal" class="screen">
       <div class="header">
-        <div>
-          <div style="font-size: 12px; color: var(--text-sub);">Ngày 11 / 30</div>
-          <div class="header-title">Nhật ký hôm nay 🥗</div>
-        </div>
-        <div class="mascot-avatar">🐱</div>
+        <div class="back-btn" onclick="goToScreen('screen-setup')"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="header-title">Chọn mục tiêu</div>
+        <div class="mascot">🐱</div>
       </div>
 
-      <!-- Calo Summary Card -->
-      <div class="card" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <div>
-            <div style="font-size: 12px; opacity: 0.9;">Calo mục tiêu hàng ngày</div>
-            <div style="font-size: 28px; font-weight: 800;" id="dash-target-calories">1,650 kcal</div>
-          </div>
-          <div style="font-size: 36px;">🔥</div>
-        </div>
-        <div style="display: flex; gap: 10px; font-size: 12px; opacity: 0.9;">
-          <div>Đã nạp: <b>1,100 kcal</b></div>
-          <div>|</div>
-          <div>Tiêu hao: <b>350 kcal</b></div>
-        </div>
-      </div>
-
-      <!-- Meals Log List -->
-      <h4 style="margin-bottom: 10px; font-size: 15px;">Thực đơn trong ngày</h4>
-
-      <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <div style="font-weight: 700; font-size: 14px;">🌅 Bữa sáng</div>
-          <div style="font-size: 12px; color: var(--text-sub);">Phở gà, 1 ly sữa hạt</div>
-        </div>
-        <div style="font-weight: 700; color: var(--primary);">450 kcal</div>
-      </div>
-
-      <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <div style="font-weight: 700; font-size: 14px;">☀️ Bữa trưa</div>
-          <div style="font-size: 12px; color: var(--text-sub);">Cơm ức gà, rau luộc</div>
-        </div>
-        <div style="font-weight: 700; color: var(--primary);">550 kcal</div>
-      </div>
-
-      <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <div style="font-weight: 700; font-size: 14px;">🌙 Bữa tối</div>
-          <div style="font-size: 12px; color: var(--text-sub);">Chưa chọn thực đơn</div>
-        </div>
-        <button style="border: none; background: var(--primary-light); color: var(--primary); padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;">+ Thêm</button>
-      </div>
-
-      <!-- Workout Log -->
-      <h4 style="margin: 10px 0; font-size: 15px;">Vận động</h4>
-      <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <div style="font-weight: 700; font-size: 14px;">🏃 Bắt đầu tập luyện</div>
-          <div style="font-size: 12px; color: var(--text-sub);">Chạy bộ nhẹ nhàng 30 phút</div>
-        </div>
-        <button style="border: none; background: #ffedd5; color: #ea580c; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;">-200 kcal</button>
-      </div>
-
-    </div>
-
-    <!-- SCREEN 6: LỊCH 30 NGÀY -->
-    <div id="screen-calendar" class="screen" style="padding-bottom: 70px;">
-      <div class="header">
-        <div class="header-title">Lịch 30 ngày Keep Flame</div>
-        <div class="mascot-avatar">🐻</div>
+      <div class="card" style="background: var(--primary-light);">
+        <div style="font-size: 13px; font-weight: 700; color: var(--primary-dark);" id="goal-calc-info">BMI: -- | TDEE: -- kcal</div>
       </div>
 
       <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <span style="font-weight: 700;">Tiến độ Check-in</span>
-          <span style="color: var(--primary); font-weight: 800;">11/30 Ngày</span>
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 8px; display:block;">🎯 BẠN MUỐN LÀM GÌ?</label>
+        <select id="goal-type" class="input-field" onchange="checkSpeed()">
+          <option value="lose">🔥 Giảm cân</option>
+          <option value="maintain">⚖️ Duy trì cân nặng</option>
+          <option value="gain">💪 Tăng cân</option>
+        </select>
+        <div class="input-group" style="margin-top: 10px;"><label>Cân nặng mục tiêu (kg)</label><input type="number" id="target-weight" class="input-field" value="65" oninput="checkSpeed()"></div>
+        <div class="input-group"><label>Thời gian (ngày)</label><input type="number" id="target-days" class="input-field" value="30" oninput="checkSpeed()"></div>
+        <div class="input-group">
+          <label>Ngân sách ăn uống</label>
+          <select id="budget-type" class="input-field">
+            <option value="save">💰 Tiết kiệm (Trứng, Đậu hũ, Ức gà, Cơm)</option>
+            <option value="normal" selected>💵 Bình thường (Cá hồi, Thịt bò, Sữa chua...)</option>
+          </select>
         </div>
-        <div class="calendar-grid" id="calendar-grid-box">
-          <!-- Calendar items generated by JS -->
+      </div>
+
+      <div id="speed-feedback" class="card" style="font-size: 12px; font-weight: 600; display:none;"></div>
+
+      <button class="btn-primary" onclick="finishGoalSetup()">Tạo kế hoạch ngay 🎉</button>
+    </div>
+
+    <!-- 4. DASHBOARD CHÍNH -->
+    <div id="screen-dashboard" class="screen" style="padding-bottom: 80px;">
+      <div class="user-switcher" id="dash-user-switcher" style="display:none;">
+        <div class="user-tab active" id="tab-u1" onclick="switchUserTab(0)">👤 Người 1</div>
+        <div class="user-tab" id="tab-u2" onclick="switchUserTab(1)">👤 Người 2</div>
+      </div>
+
+      <div class="header">
+        <div>
+          <div style="font-size: 11px; color: var(--text-sub);" id="dash-streak-count">🔥 Streak: 1 ngày</div>
+          <div class="header-title" id="dash-user-name">Hồ sơ: Nguyễn</div>
+        </div>
+        <div class="mascot">🐻</div>
+      </div>
+
+      <!-- Summary Card -->
+      <div class="card" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white;">
+        <div style="display: flex; justify-content: space-between;">
+          <div>
+            <div style="font-size: 11px; opacity: 0.9;">Calories hôm nay</div>
+            <div style="font-size: 24px; font-weight: 800;" id="dash-cal-num">0 / 1,750 kcal</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; opacity: 0.9;">Protein</div>
+            <div style="font-size: 24px; font-weight: 800;" id="dash-pro-num">0 / 120 g</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions / Tracker -->
+      <div class="card">
+        <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px;">💧 Nước hôm nay (<span id="water-count">0</span>/8 ly)</div>
+        <div class="water-grid" id="water-grid-box"></div>
+      </div>
+
+      <!-- Food Section -->
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div style="font-weight: 700; font-size: 13px;">🍚 Nhật ký ăn uống</div>
+          <button style="border:none; background:var(--primary-light); color:var(--primary-dark); padding:4px 8px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="goToScreen('screen-add-food')">+ Thêm món</button>
+        </div>
+        <div id="food-log-list" style="font-size: 12px; color: var(--text-sub);">Chưa nhập món ăn nào hôm nay.</div>
+      </div>
+
+      <!-- Daily Checklist -->
+      <div class="card">
+        <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px;">☑️ Checklist ngày</div>
+        <div style="display:flex; flex-direction:column; gap:6px; font-size:12px;" id="checklist-box">
+          <label><input type="checkbox" onchange="toggleCheck(0)"> Đạt Calories mục tiêu</label>
+          <label><input type="checkbox" onchange="toggleCheck(1)"> Đủ Protein</label>
+          <label><input type="checkbox" onchange="toggleCheck(2)"> Uống đủ 8 ly nước</label>
+          <label><input type="checkbox" onchange="toggleCheck(3)"> Vận động / Đi bộ 30P</label>
+          <label><input type="checkbox" onchange="toggleCheck(4)"> Ngủ đủ 7-9 giờ</label>
         </div>
       </div>
     </div>
 
-    <!-- NAVIGATION BAR -->
-    <div class="navbar" id="main-nav" style="display: none;">
-      <div class="nav-item active" onclick="switchTab('screen-dashboard', this)">
-        <i class="fa-solid fa-house"></i>
-        <span>Nhật ký</span>
+    <!-- 5. NHẬP MÓN ĂN (DATABASE & TỰ NHẬP) -->
+    <div id="screen-add-food" class="screen">
+      <div class="header">
+        <div class="back-btn" onclick="goToScreen('screen-dashboard')"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="header-title">Thêm món ăn</div>
+        <div class="mascot">🍚</div>
       </div>
-      <div class="nav-item" onclick="switchTab('screen-calendar', this)">
-        <i class="fa-solid fa-calendar-days"></i>
-        <span>Lịch 30 ngày</span>
+
+      <div class="card">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-sub);">CHỌN TỪ DATABASE MÓN VIỆT</label>
+        <select id="db-food-select" class="input-field" style="margin-top: 6px;" onchange="autoFillFood()">
+          <option value="">-- Chọn món phổ biến --</option>
+          <option value="750,30">Cơm gà xối mỡ (1 phần - ~750 kcal)</option>
+          <option value="500,25">Phở bò (1 tô - ~500 kcal)</option>
+          <option value="200,4">Cơm trắng (1 chén - ~200 kcal)</option>
+          <option value="165,31">Ức gà luộc (100g - ~165 kcal)</option>
+          <option value="155,13">Trứng chiên/luộc (2 quả - ~155 kcal)</option>
+          <option value="140,14">Đậu hũ rán (100g - ~140 kcal)</option>
+        </select>
       </div>
-      <div class="nav-item" onclick="alert('Tính năng Thành tích đang cập nhật!')">
-        <i class="fa-solid fa-trophy"></i>
-        <span>Thành tích</span>
+
+      <div class="card">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-sub);">HOẶC TỰ NHẬP MÓN ĂN</label>
+        <div class="input-group" style="margin-top:6px;"><label>Tên món</label><input type="text" id="food-name" class="input-field" placeholder="Ví dụ: Bún chả"></div>
+        <div style="display:flex; gap:8px;">
+          <div class="input-group" style="flex:1;"><label>Kcal ước tính</label><input type="number" id="food-cal" class="input-field" value="400"></div>
+          <div class="input-group" style="flex:1;"><label>Protein (g)</label><input type="number" id="food-pro" class="input-field" value="20"></div>
+        </div>
       </div>
+
+      <button class="btn-primary" onclick="addFoodItem()">Lưu món ăn 🥗</button>
+    </div>
+
+    <!-- 6. LỊCH 30 NGÀY -->
+    <div id="screen-calendar" class="screen" style="padding-bottom:80px;">
+      <div class="header">
+        <div class="header-title">Lịch 30 ngày Keep Flame</div>
+        <div class="mascot">📅</div>
+      </div>
+      <div class="card">
+        <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:8px; text-align:center;" id="cal-days-grid"></div>
+      </div>
+    </div>
+
+    <!-- 7. THÀNH TÍCH (ACHIEVEMENTS) -->
+    <div id="screen-achievements" class="screen" style="padding-bottom:80px;">
+      <div class="header">
+        <div class="header-title">Thành tích & Huy hiệu</div>
+        <div class="mascot">🏆</div>
+      </div>
+      <div class="badge-grid">
+        <div class="badge-item unlocked">
+          <div style="font-size:28px;">🔥</div>
+          <div style="font-weight:700; font-size:12px;">Khởi đầu tốt</div>
+          <div style="font-size:10px; color:var(--text-sub);">Tạo tài khoản</div>
+        </div>
+        <div class="badge-item">
+          <div style="font-size:28px;">💪</div>
+          <div style="font-weight:700; font-size:12px;">Protein Master</div>
+          <div style="font-size:10px; color:var(--text-sub);">Đạt protein 7 ngày</div>
+        </div>
+        <div class="badge-item">
+          <div style="font-size:28px;">🥛</div>
+          <div style="font-weight:700; font-size:12px;">Thánh uống nước</div>
+          <div style="font-size:10px; color:var(--text-sub);">Uống 8 ly nước</div>
+        </div>
+        <div class="badge-item">
+          <div style="font-size:28px;">👑</div>
+          <div style="font-weight:700; font-size:12px;">30-Day Flame</div>
+          <div style="font-size:10px; color:var(--text-sub);">Hoàn thành 30 ngày</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. CÀI ĐẶT & LƯU DỮ LIỆU -->
+    <div id="screen-settings" class="screen" style="padding-bottom:80px;">
+      <div class="header">
+        <div class="header-title">Cài đặt & Dữ liệu</div>
+        <div class="mascot">⚙️</div>
+      </div>
+      <div class="card">
+        <button class="btn-primary" style="background:#0284c7; margin-bottom:10px;" onclick="exportJSON()">💾 Xuất dữ liệu (JSON)</button>
+        <button class="btn-primary" style="background:#e11d48;" onclick="resetData()">⚠️ Reset xóa toàn bộ dữ liệu</button>
+      </div>
+    </div>
+
+    <!-- MAIN NAVBAR -->
+    <div class="navbar" id="main-nav">
+      <div class="nav-item active" onclick="switchNav('screen-dashboard', this)"><i class="fa-solid fa-house"></i><span>Tổng quan</span></div>
+      <div class="nav-item" onclick="switchNav('screen-calendar', this)"><i class="fa-solid fa-calendar-days"></i><span>30 Ngày</span></div>
+      <div class="nav-item" onclick="switchNav('screen-achievements', this)"><i class="fa-solid fa-trophy"></i><span>Thành tích</span></div>
+      <div class="nav-item" onclick="switchNav('screen-settings', this)"><i class="fa-solid fa-gear"></i><span>Cài đặt</span></div>
     </div>
 
   </div>
 
   <script>
-    let userData = {
-      gender: 'male',
-      age: 25,
-      height: 170,
-      weight: 70,
-      targetWeight: 65,
-      bmi: 0,
-      tdee: 0,
-      goal: 'lose'
+    // State storage
+    let appState = {
+      mode: 1, // 1 or 2 users
+      activeUserIndex: 0,
+      users: []
     };
 
-    function goToScreen(screenId) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(screenId).classList.add('active');
-      
-      if (screenId === 'screen-dashboard' || screenId === 'screen-calendar') {
-        document.getElementById('main-nav').style.display = 'flex';
+    let tempSetupIndex = 0;
+
+    function selectMode(m) {
+      appState.mode = m;
+      document.getElementById('mode-1').classList.toggle('active', m === 1);
+      document.getElementById('mode-2').classList.toggle('active', m === 2);
+    }
+
+    function startSetup() {
+      appState.users = [];
+      tempSetupIndex = 0;
+      loadSetupScreenForUser(0);
+    }
+
+    function loadSetupScreenForUser(index) {
+      document.getElementById('setup-title').innerText = `Thông tin Người ${index + 1}`;
+      document.getElementById('setup-name').value = index === 0 ? "Nguyễn" : "Lan";
+      goToScreen('screen-setup');
+    }
+
+    function setSetupGender(g) {
+      document.getElementById('setup-male').classList.toggle('active', g === 'male');
+      document.getElementById('setup-female').classList.toggle('active', g === 'female');
+    }
+
+    function savePersonSetup() {
+      let isMale = document.getElementById('setup-male').classList.contains('active');
+      let u = {
+        name: document.getElementById('setup-name').value || `Người ${tempSetupIndex + 1}`,
+        gender: isMale ? 'male' : 'female',
+        age: parseFloat(document.getElementById('setup-age').value) || 25,
+        height: parseFloat(document.getElementById('setup-height').value) || 170,
+        weight: parseFloat(document.getElementById('setup-weight').value) || 70,
+        activity: parseFloat(document.getElementById('setup-activity').value) || 1.375,
+        water: 0,
+        foods: [],
+        checks: [false, false, false, false, false]
+      };
+
+      // Calc BMR & TDEE
+      let bmr = (10 * u.weight) + (6.25 * u.height) - (5 * u.age) + (u.gender === 'male' ? 5 : -161);
+      u.bmr = Math.round(bmr);
+      u.tdee = Math.round(bmr * u.activity);
+      u.bmi = (u.weight / ((u.height/100)*(u.height/100))).toFixed(1);
+
+      appState.users.push(u);
+
+      if (appState.mode === 2 && tempSetupIndex === 0) {
+        tempSetupIndex = 1;
+        loadSetupScreenForUser(1);
       } else {
-        document.getElementById('main-nav').style.display = 'none';
+        tempSetupIndex = 0;
+        showGoalScreen();
       }
     }
 
-    function selectGender(gender) {
-      userData.gender = gender;
-      document.getElementById('gender-male').classList.toggle('active', gender === 'male');
-      document.getElementById('gender-female').classList.toggle('active', gender === 'female');
+    function showGoalScreen() {
+      let u = appState.users[0];
+      document.getElementById('goal-calc-info').innerText = `BMI: ${u.bmi} | TDEE: ${u.tdee.toLocaleString()} kcal/ngày`;
+      checkSpeed();
+      goToScreen('screen-goal');
     }
 
-    function calculateBMI() {
-      userData.age = parseFloat(document.getElementById('input-age').value) || 25;
-      userData.height = parseFloat(document.getElementById('input-height').value) || 170;
-      userData.weight = parseFloat(document.getElementById('input-weight').value) || 70;
+    function checkSpeed() {
+      let type = document.getElementById('goal-type').value;
+      let targetW = parseFloat(document.getElementById('target-weight').value) || 65;
+      let days = parseFloat(document.getElementById('target-days').value) || 30;
+      let u = appState.users[tempSetupIndex];
+      let diff = Math.abs(u.weight - targetW);
+      let kgPerWeek = (diff / days) * 7;
 
-      // BMI Formula
-      let hM = userData.height / 100;
-      let bmi = (userData.weight / (hM * hM)).toFixed(1);
-      userData.bmi = bmi;
+      let box = document.getElementById('speed-feedback');
+      box.style.display = 'block';
 
-      // TDEE BMR Formula (Mifflin-St Jeor)
-      let bmr = (10 * userData.weight) + (6.25 * userData.height) - (5 * userData.age);
-      bmr += (userData.gender === 'male') ? 5 : -161;
-      let tdee = Math.round(bmr * 1.375);
-      userData.tdee = tdee;
-
-      document.getElementById('res-bmi').innerText = bmi;
-      document.getElementById('res-tdee').innerText = tdee.toLocaleString();
-
-      goToScreen('screen-result');
+      if (type === 'lose') {
+        if (kgPerWeek > 1.0) {
+          box.style.background = '#ffedd5'; box.style.color = '#ea580c';
+          box.innerText = `🟠 Giảm ${kgPerWeek.toFixed(1)} kg/tuần là khá nhanh! Nên kéo dài thời gian để đảm bảo sức khỏe.`;
+        } else {
+          box.style.background = '#dcfce7'; box.style.color = '#16a34a';
+          box.innerText = `🟢 Tốc độ giảm ${kgPerWeek.toFixed(1)} kg/tuần rất hợp lý và an toàn!`;
+        }
+      } else {
+        box.style.display = 'none';
+      }
     }
 
-    function selectGoal(element, goal) {
-      document.querySelectorAll('.goal-card').forEach(c => c.classList.remove('active'));
-      element.classList.add('active');
-      userData.goal = goal;
-    }
+    function finishGoalSetup() {
+      let type = document.getElementById('goal-type').value;
+      let targetW = parseFloat(document.getElementById('target-weight').value) || 65;
 
-    function generatePlan() {
-      let targetCal = userData.tdee;
-      if (userData.goal === 'lose') targetCal -= 450;
-      if (userData.goal === 'gain') targetCal += 400;
+      appState.users.forEach(u => {
+        let cal = u.tdee;
+        if (type === 'lose') cal -= 450;
+        if (type === 'gain') cal += 400;
+        u.targetCal = cal;
+        u.targetPro = Math.round(u.weight * 1.8);
+      });
 
-      document.getElementById('dash-target-calories').innerText = targetCal.toLocaleString() + ' kcal';
-      renderCalendar();
+      saveToStorage();
+      renderDashboard();
       goToScreen('screen-dashboard');
     }
 
-    function renderCalendar() {
-      let grid = document.getElementById('calendar-grid-box');
-      grid.innerHTML = '';
-      for (let i = 1; i <= 30; i++) {
-        let node = document.createElement('div');
-        node.className = 'day-node';
-        if (i < 11) node.classList.add('completed');
-        if (i === 11) node.classList.add('active-day');
-        node.innerText = i;
-        grid.appendChild(node);
+    function renderDashboard() {
+      let u = appState.users[appState.activeUserIndex];
+      document.getElementById('dash-user-name').innerText = `Hồ sơ: ${u.name}`;
+      
+      let sumCal = u.foods.reduce((a, b) => a + b.cal, 0);
+      let sumPro = u.foods.reduce((a, b) => a + b.pro, 0);
+
+      document.getElementById('dash-cal-num').innerText = `${sumCal} / ${u.targetCal} kcal`;
+      document.getElementById('dash-pro-num').innerText = `${sumPro} / ${u.targetPro} g`;
+
+      // Render water
+      document.getElementById('water-count').innerText = u.water;
+      let wGrid = document.getElementById('water-grid-box');
+      wGrid.innerHTML = '';
+      for (let i = 0; i < 8; i++) {
+        let cup = document.createElement('div');
+        cup.className = `water-cup ${i < u.water ? 'filled' : ''}`;
+        cup.innerHTML = '<i class="fa-solid fa-glass-water"></i>';
+        cup.onclick = () => { u.water = i + 1; saveToStorage(); renderDashboard(); };
+        wGrid.appendChild(cup);
+      }
+
+      // Render food list
+      let foodBox = document.getElementById('food-log-list');
+      if (u.foods.length === 0) {
+        foodBox.innerHTML = "Chưa nhập món ăn nào hôm nay.";
+      } else {
+        foodBox.innerHTML = u.foods.map(f => `<div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>${f.name}</span><b>${f.cal} kcal</b></div>`).join('');
+      }
+
+      // Render User Switcher
+      let switcher = document.getElementById('dash-user-switcher');
+      if (appState.mode === 2) {
+        switcher.style.display = 'flex';
+        document.getElementById('tab-u1').innerText = `👤 ${appState.users[0].name}`;
+        document.getElementById('tab-u2').innerText = `👤 ${appState.users[1].name}`;
+      } else {
+        switcher.style.display = 'none';
+      }
+
+      renderCalendarGrid();
+    }
+
+    function switchUserTab(index) {
+      appState.activeUserIndex = index;
+      document.getElementById('tab-u1').classList.toggle('active', index === 0);
+      document.getElementById('tab-u2').classList.toggle('active', index === 1);
+      renderDashboard();
+    }
+
+    function autoFillFood() {
+      let val = document.getElementById('db-food-select').value;
+      if (val) {
+        let [c, p] = val.split(',');
+        document.getElementById('food-cal').value = c;
+        document.getElementById('food-pro').value = p;
+        let optText = document.getElementById('db-food-select').options[document.getElementById('db-food-select').selectedIndex].text;
+        document.getElementById('food-name').value = optText.split(' (')[0];
       }
     }
 
-    function switchTab(screenId, el) {
+    function addFoodItem() {
+      let name = document.getElementById('food-name').value || "Món ăn";
+      let cal = parseFloat(document.getElementById('food-cal').value) || 0;
+      let pro = parseFloat(document.getElementById('food-pro').value) || 0;
+
+      appState.users[appState.activeUserIndex].foods.push({ name, cal, pro });
+      saveToStorage();
+      renderDashboard();
+      goToScreen('screen-dashboard');
+    }
+
+    function renderCalendarGrid() {
+      let grid = document.getElementById('cal-days-grid');
+      grid.innerHTML = '';
+      for (let i = 1; i <= 30; i++) {
+        let d = document.createElement('div');
+        d.style.padding = '10px'; d.style.borderRadius = '10px'; d.style.background = i === 1 ? 'var(--primary)' : '#f1f5f9';
+        d.style.color = i === 1 ? 'white' : 'var(--text-main)'; d.style.fontWeight = '700'; d.style.fontSize = '11px';
+        d.innerText = `D${i}`;
+        grid.appendChild(d);
+      }
+    }
+
+    function goToScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.getElementById('main-nav').style.display = (id.startsWith('screen-dash') || id.startsWith('screen-cal') || id.startsWith('screen-achieve') || id.startsWith('screen-setting')) ? 'flex' : 'none';
+    }
+
+    function switchNav(id, el) {
       document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
       el.classList.add('active');
-      goToScreen(screenId);
+      goToScreen(id);
     }
+
+    function saveToStorage() { localStorage.setItem('keep_flame_data', JSON.stringify(appState)); }
+    function loadFromStorage() {
+      let d = localStorage.getItem('keep_flame_data');
+      if (d) {
+        appState = JSON.parse(d);
+        renderDashboard();
+        goToScreen('screen-dashboard');
+      }
+    }
+
+    function exportJSON() {
+      let blob = new Blob([JSON.stringify(appState, null, 2)], {type : 'application/json'});
+      let a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'keep_flame_backup.json';
+      a.click();
+    }
+
+    function resetData() {
+      if (confirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu?')) {
+        localStorage.removeItem('keep_flame_data');
+        location.reload();
+      }
+    }
+
+    // Auto load on start
+    window.onload = loadFromStorage;
   </script>
 </body>
 </html>
