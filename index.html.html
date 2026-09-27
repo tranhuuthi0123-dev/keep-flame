@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keep Flame - Giữ ngọn lửa - Giữ sức khỏe - Giữ động lực</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            flame: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Font Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      user-select: none;
+    }
+    
+    /* Scrollbar tùy chỉnh */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ea580c;
+    }
+
+    /* Animations ngọn lửa */
+    @keyframes pulse-subtle {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+    .animate-flame {
+      animation: pulse-subtle 2s ease-in-out infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { filter: drop-shadow(0 0 15px rgba(249, 115, 22, 0.6)); }
+      50% { filter: drop-shadow(0 0 25px rgba(234, 88, 12, 0.9)); }
+    }
+    .flame-glow {
+      animation: flicker 1.5s ease-in-out infinite alternate;
+    }
+
+    /* Modal transition */
+    .modal-backdrop {
+      background-color: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col md:flex-row overflow-hidden antialiased bg-slate-950 text-slate-100">
+
+  <svg style="display: none;">
+    <defs>
+      <!-- Logo Flame SVG Template -->
+      <g id="mascot-flame">
+        <path d="M50 5 C50 5 65 25 65 40 C65 48 60 55 55 60 C70 55 80 40 80 30 C80 55 65 75 50 90 C35 75 20 55 20 30 C20 40 30 55 45 60 C40 55 35 48 35 40 C35 25 50 5 50 5 Z" fill="url(#flame-grad)" />
+        <path d="M50 30 C50 30 58 42 58 52 C58 58 54 62 50 66 C46 62 42 58 42 52 C42 42 50 30 50 30 Z" fill="#fef08a" />
+        <!-- Eyes -->
+        <circle cx="43" cy="48" r="3" fill="#0f172a"/>
+        <circle cx="57" cy="48" r="3" fill="#0f172a"/>
+        <!-- Smile -->
+        <path d="M44 56 Q50 61 56 56" stroke="#0f172a" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Sparkles/Cheeks -->
+        <circle cx="39" cy="53" r="2" fill="#f43f5e" opacity="0.6"/>
+        <circle cx="61" cy="53" r="2" fill="#f43f5e" opacity="0.6"/>
+      </g>
+      <linearGradient id="flame-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#fbbf24" />
+        <stop offset="50%" stop-color="#f97316" />
+        <stop offset="100%" stop-color="#dc2626" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- ========================================================================= -->
+  <!-- MÀN HÌNH MỞ ĐẦU / ONBOARDING (ẨN NẾU ĐÃ CÓ DỮ LIỆU CẤU HÌNH) -->
+  <!-- ========================================================================= -->
+  <div id="onboarding-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 bg-slate-950 overflow-y-auto">
+    <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative text-center my-auto">
+      
+      <!-- Mascot Flame -->
+      <div class="w-32 h-32 mx-auto mb-4 animate-flame flame-glow">
+        <svg viewBox="0 0 100 100" class="w-full h-full">
+          <use href="#mascot-flame" />
+        </svg>
+      </div>
+
+      <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-flame-500 to-red-500 mb-2">
+        KEEP FLAME
+      </h1>
+      <p class="text-slate-400 text-sm font-medium mb-6">
+        "Giữ ngọn lửa – Giữ sức khỏe – Giữ động lực"
+      </p>
+
+      <!-- Step 1: Chọn Chế độ -->
+      <div id="onboard-step-1" class="space-y-4">
+        <p class="text-xs font-semibold uppercase tracking-wider text-flame-400">🔥 Bạn muốn sử dụng Keep Flame như thế nào?</p>
+        
+        <div class="grid grid-cols-1 gap-3">
+          <button onclick="selectUsageMode('single')" class="group p-4 bg-slate-800 hover:bg-flame-950/40 border border-slate-700 hover:border-flame-500/50 rounded-2xl transition flex items-center gap-4 text-left">
+            <div class="p-3 bg-flame-500/10 text-flame-500 rounded-xl group-hover:bg-flame-500 group-hover:text-white transition">
+              <i data-lucide="user" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="font-bold text-slate-100">👤 Một mình</div>
+              <div class="text-xs text-slate-400">Theo dõi sức khỏe & cân nặng cá nhân</div>
+            </div>
+          </button>
+
+          <button onclick="selectUsageMode('couple')" class="group p-4 bg-slate-800 hover:bg-flame-950/40 border border-slate-700 hover:border-flame-500/50 rounded-2xl transition flex items-center gap-4 text-left">
+            <div class="p-3 bg-rose-500/10 text-rose-500 rounded-xl group-hover:bg-rose-500 group-hover:text-white transition">
+              <i data-lucide="users" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="font-bold text-slate-100">👥 2 Người đồng hành</div>
+              <div class="text-xs text-slate-400">Bản thân + Bạn thân / Người yêu cùng cố gắng</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800">
+          <button onclick="triggerImportJSON()" class="w-full py-2.5 px-4 bg-slate-800/80 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-medium border border-slate-700/80 flex items-center justify-center gap-2 transition">
+            <i data-lucide="upload" class="w-4 h-4"></i>
+            Tôi đã có dữ liệu (Nhập JSON)
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Thiết lập Hồ sơ -->
+      <div id="onboard-step-2" class="space-y-4 hidden text-left">
+        <div class="flex items-center justify-between">
+          <h2 id="onboard-profile-title" class="text-lg font-bold text-slate-100">Thiết lập Hồ sơ</h2>
+          <span id="onboard-profile-badge" class="text-xs px-2.5 py-1 bg-flame-500/20 text-flame-400 font-semibold rounded-full">Người 1</span>
+        </div>
+
+        <form id="onboard-form" onsubmit="saveProfileOnboarding(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Tên / Nickname</label>
+            <input type="text" id="prof-name" required placeholder="Ví dụ: Minh Trí" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Giới tính</label>
+              <select id="prof-gender" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Tuổi</label>
+              <input type="number" id="prof-age" min="10" max="100" value="25" required class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Chiều cao (cm)</label>
+              <input type="number" id="prof-height" min="100" max="230" value="170" required class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Cân nặng (kg)</label>
+              <input type="number" step="0.1" id="prof-weight" min="30" max="200" value="70" required class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Mức độ vận động</label>
+            <select id="prof-activity" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+              <option value="1.2">🛋️ Ít vận động (Dân văn phòng, ít tập)</option>
+              <option value="1.375" selected>🚶 Vận động nhẹ (Tập 1-3 buổi/tuần)</option>
+              <option value="1.55">🏃 Vận động vừa (Tập 3-5 buổi/tuần)</option>
+              <option value="1.725">🏋️ Vận động nhiều (Tập 6-7 buổi/tuần)</option>
+              <option value="1.9">🔥 Rất năng động (Lao động nặng/VĐV)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">🎯 Mục tiêu</label>
+            <select id="prof-goal-type" onchange="toggleGoalInputs()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+              <option value="lose">🔻 Giảm cân</option>
+              <option value="maintain">➡️ Duy trì cân nặng</option>
+              <option value="gain">🔺 Tăng cân</option>
+            </select>
+          </div>
+
+          <div id="goal-weight-container" class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Cân nặng mục tiêu (kg)</label>
+              <input type="number" step="0.1" id="prof-target-weight" value="65" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Thời gian (ngày)</label>
+              <input type="number" id="prof-target-days" value="60" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+            </div>
+          </div>
+
+          <!-- Alert Cảnh báo mục tiêu gấp -->
+          <div id="goal-warning" class="hidden p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400 text-xs flex gap-2 items-start">
+            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 mt-0.5"></i>
+            <span>⚠️ Tốc độ mục tiêu khá gấp (&gt;1kg/tuần). Hãy cân nhắc kéo dài thời gian để an toàn & dễ duy trì hơn!</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">💰 Ngân sách ăn uống</label>
+            <select id="prof-budget" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+              <option value="saving">Tiết kiệm (Trứng, đậu hũ, ức gà, chuối)</option>
+              <option value="normal" selected>Bình thường (Đa dạng: Thịt bò, cá, sữa chua, yến mạch)</option>
+            </select>
+          </div>
+
+          <div class="pt-3">
+            <button type="submit" class="w-full py-3 bg-gradient-to-r from-flame-500 to-amber-500 hover:from-flame-600 hover:to-amber-600 text-white font-bold rounded-xl shadow-lg shadow-flame-500/25 transition">
+              Tiếp tục ➔
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INPUT FILE ẨN CHỨA DỮ LIỆU IMPORT -->
+  <input type="file" id="json-import-file" accept=".json" class="hidden" onchange="handleImportJSON(event)">
+
+  <!-- ========================================================================= -->
+  <!-- SIDEBAR DÀNH CHO PC / TABLET -->
+  <!-- ========================================================================= -->
+  <aside class="hidden md:flex flex-col w-64 bg-slate-900 border-r border-slate-800 p-4 shrink-0">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 px-2 py-3 mb-4">
+      <div class="w-10 h-10 animate-flame">
+        <svg viewBox="0 0 100 100" class="w-full h-full">
+          <use href="#mascot-flame" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="font-extrabold text-lg tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-flame-500">
+          KEEP FLAME
+        </h1>
+        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Giữ ngọn lửa khỏe</p>
+      </div>
+    </div>
+
+    <!-- Switcher 2 người nếu chế độ couple -->
+    <div id="sidebar-profile-switch" class="hidden mb-4 p-1.5 bg-slate-950 rounded-xl border border-slate-800 grid grid-cols-2 gap-1 text-xs font-semibold">
+      <button id="switch-btn-p1" onclick="switchProfile('p1')" class="py-1.5 rounded-lg text-center transition bg-flame-500 text-white shadow">
+        Người 1
+      </button>
+      <button id="switch-btn-p2" onclick="switchProfile('p2')" class="py-1.5 rounded-lg text-center text-slate-400 hover:text-slate-200 transition">
+        Người 2
+      </button>
+    </div>
+
+    <!-- Navigation Menu Items -->
+    <nav class="flex-1 space-y-1 overflow-y-auto pr-1">
+      <button onclick="navTo('dashboard')" id="nav-dashboard" class="nav-btn active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="layout-dashboard" class="w-4 h-4 text-flame-400"></i> Tổng quan
+      </button>
+      <button onclick="navTo('plan30')" id="nav-plan30" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="calendar" class="w-4 h-4 text-amber-400"></i> Lịch 30 ngày
+      </button>
+      <button onclick="navTo('food')" id="nav-food" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="utensils" class="w-4 h-4 text-emerald-400"></i> Ăn uống
+      </button>
+      <button onclick="navTo('exercise')" id="nav-exercise" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="activity" class="w-4 h-4 text-blue-400"></i> Vận động
+      </button>
+      <button onclick="navTo('water-sleep')" id="nav-water-sleep" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="droplets" class="w-4 h-4 text-cyan-400"></i> Nước & Ngủ
+      </button>
+      <button onclick="navTo('weight')" id="nav-weight" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="scale" class="w-4 h-4 text-purple-400"></i> Cân nặng
+      </button>
+      <button onclick="navTo('achievements')" id="nav-achievements" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="award" class="w-4 h-4 text-yellow-400"></i> Thành tích
+      </button>
+      <button onclick="navTo('report')" id="nav-report" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="bar-chart-3" class="w-4 h-4 text-rose-400"></i> Báo cáo
+      </button>
+    </nav>
+
+    <!-- Footer Profile & Settings Link -->
+    <div class="pt-4 border-t border-slate-800 space-y-1">
+      <button onclick="navTo('profile')" id="nav-profile" class="nav-btn w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-200">
+        <i data-lucide="user-cog" class="w-4 h-4"></i> Hồ sơ & Cài đặt
+      </button>
+      <button onclick="exportJSON()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-200">
+        <i data-lucide="download" class="w-4 h-4"></i> Xuất file JSON
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========================================================================= -->
+  <!-- TABBAR ĐÁY MOBILE -->
+  <!-- ========================================================================= -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 z-40 px-2 py-1.5 flex justify-around items-center">
+    <button onclick="navTo('dashboard')" id="mob-nav-dashboard" class="mob-nav-btn active flex flex-col items-center gap-0.5 p-1.5 text-slate-400 hover:text-flame-400">
+      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+      <span class="text-[10px]">Tổng quan</span>
+    </button>
+    <button onclick="navTo('food')" id="mob-nav-food" class="mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 text-slate-400 hover:text-emerald-400">
+      <i data-lucide="utensils" class="w-5 h-5"></i>
+      <span class="text-[10px]">Ăn uống</span>
+    </button>
+    <button onclick="navTo('exercise')" id="mob-nav-exercise" class="mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 text-slate-400 hover:text-blue-400">
+      <i data-lucide="activity" class="w-5 h-5"></i>
+      <span class="text-[10px]">Vận động</span>
+    </button>
+    <button onclick="navTo('plan30')" id="mob-nav-plan30" class="mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 text-slate-400 hover:text-amber-400">
+      <i data-lucide="calendar" class="w-5 h-5"></i>
+      <span class="text-[10px]">30 ngày</span>
+    </button>
+    <button onclick="navTo('profile')" id="mob-nav-profile" class="mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 text-slate-400 hover:text-slate-200">
+      <i data-lucide="user" class="w-5 h-5"></i>
+      <span class="text-[10px]">Hồ sơ</span>
+    </button>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- KHU VỰC NỘI DUNG CHÍNH (MAIN CONTENT VIEWS) -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 overflow-y-auto pb-20 md:pb-6 p-4 md:p-8 bg-slate-950">
+
+    <!-- Topbar Mobile Header -->
+    <div class="md:hidden flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8">
+          <svg viewBox="0 0 100 100" class="w-full h-full">
+            <use href="#mascot-flame" />
+          </svg>
+        </div>
+        <span class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-flame-500">KEEP FLAME</span>
+      </div>
+      <!-- Profile Switcher Mobile (Nếu 2 người) -->
+      <div id="mob-profile-switch" class="hidden flex items-center bg-slate-900 border border-slate-800 rounded-lg p-0.5 text-xs font-semibold">
+        <button id="mob-switch-p1" onclick="switchProfile('p1')" class="px-2.5 py-1 rounded-md bg-flame-500 text-white">N1</button>
+        <button id="mob-switch-p2" onclick="switchProfile('p2')" class="px-2.5 py-1 rounded-md text-slate-400">N2</button>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- VIEW 1: DASHBOARD / TỔNG QUAN -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="view-dashboard" class="app-view space-y-6">
+      
+      <!-- Greeting Banner -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-slate-900 via-slate-900 to-flame-950/40 p-5 rounded-3xl border border-slate-800">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 id="dash-greeting-name" class="text-2xl font-bold text-slate-100">Xin chào! 🔥</h2>
+            <span id="dash-couple-tag" class="hidden text-xs px-2 py-0.5 bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-full font-semibold">❤️ Chế độ 2 Người</span>
+          </div>
+          <p id="dash-quote" class="text-xs text-slate-400 mt-1">"Giữ kỷ luật hôm nay - Nhận thành quả ngày mai!"</p>
+        </div>
+        <!-- Streak Widget -->
+        <div class="flex items-center gap-3 bg-slate-950/80 px-4 py-2.5 rounded-2xl border border-slate-800">
+          <div class="text-3xl">🔥</div>
+          <div>
+            <div class="text-xs text-slate-400 font-medium">Streak liên tiếp</div>
+            <div id="dash-streak-count" class="text-lg font-black text-amber-400">0 ngày</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chỉ số cơ thể & Mục tiêu -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <!-- BMI -->
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800">
+          <div class="text-xs font-semibold text-slate-400 mb-1">BMI</div>
+          <div id="dash-bmi-val" class="text-2xl font-black text-slate-100">--</div>
+          <div id="dash-bmi-badge" class="mt-2 text-[11px] font-semibold px-2 py-0.5 rounded-md inline-block bg-slate-800 text-slate-300">Bình thường</div>
+        </div>
+        <!-- BMR -->
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800">
+          <div class="text-xs font-semibold text-slate-400 mb-1">BMR (Nghỉ ngơi)</div>
+          <div id="dash-bmr-val" class="text-2xl font-black text-slate-100">-- <span class="text-xs font-normal text-slate-400">kcal</span></div>
+          <p class="text-[10px] text-slate-500 mt-2">Năng lượng tối thiểu sống</p>
+        </div>
+        <!-- TDEE -->
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800">
+          <div class="text-xs font-semibold text-slate-400 mb-1">TDEE (Tiêu thụ)</div>
+          <div id="dash-tdee-val" class="text-2xl font-black text-slate-100">-- <span class="text-xs font-normal text-slate-400">kcal</span></div>
+          <p class="text-[10px] text-slate-500 mt-2">Ước tính tiêu hao/ngày</p>
+        </div>
+        <!-- Calo Mục Tiêu -->
+        <div class="bg-slate-900 p-4 rounded-2xl border border-flame-500/30 bg-flame-950/10">
+          <div class="text-xs font-semibold text-flame-400 mb-1">🎯 Calo Mục Tiêu</div>
+          <div id="dash-target-cal" class="text-2xl font-black text-flame-400">-- <span class="text-xs font-normal text-slate-400">kcal</span></div>
+          <div id="dash-goal-desc" class="text-[10px] text-slate-400 mt-2">Giảm cân an toàn</div>
+        </div>
+      </div>
+
+      <!-- Tiến Trình Hôm Nay (Today Tracker Progress) -->
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-slate-100 flex items-center gap-2">
+            <i data-lucide="clock" class="w-4 h-4 text-flame-400"></i> Tiến Trình Hôm Nay
+          </h3>
+          <span class="text-xs text-slate-400" id="dash-today-date">Hôm nay</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Calo Progress -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800/80">
+            <div class="flex justify-between text-xs font-semibold mb-2">
+              <span class="text-slate-300">🍚 Calories</span>
+              <span id="dash-cal-num" class="text-emerald-400">0 / 0 kcal</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div id="dash-cal-bar" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Protein Progress -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800/80">
+            <div class="flex justify-between text-xs font-semibold mb-2">
+              <span class="text-slate-300">🥩 Protein</span>
+              <span id="dash-prot-num" class="text-flame-400">0 / 0 g</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div id="dash-prot-bar" class="bg-flame-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Nước Progress -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800/80">
+            <div class="flex justify-between text-xs font-semibold mb-2">
+              <span class="text-slate-300">💧 Nước uống</span>
+              <span id="dash-water-num" class="text-cyan-400">0 / 8 ly</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div id="dash-water-bar" class="bg-cyan-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist Nhiệm Vụ Hàng Ngày -->
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-3">
+        <h3 class="font-bold text-slate-100 flex items-center gap-2">
+          <i data-lucide="check-square" class="w-4 h-4 text-emerald-400"></i> Checklist Giữ Lửa Hôm Nay
+        </h3>
+
+        <div id="daily-checklist" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Bảng So Sánh Đồng Hành (Nếu Chế Độ 2 Người) -->
+      <div id="couple-sync-widget" class="hidden bg-slate-900 p-5 rounded-3xl border border-rose-500/30 bg-rose-950/10 space-y-3">
+        <h3 class="font-bold text-rose-400 flex items-center gap-2 text-sm">
+          <i data-lucide="heart" class="w-4 h-4"></i> Nhịp Đập Đồng Hành
+        </h3>
+        <div class="grid grid-cols-2 gap-4 text-center">
+          <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+            <div id="cp-p1-name" class="font-bold text-slate-200 text-xs">Người 1</div>
+            <div id="cp-p1-streak" class="text-xl font-black text-amber-400 my-1">🔥 0 ngày</div>
+            <div id="cp-p1-cal" class="text-[11px] text-slate-400">0 kcal</div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+            <div id="cp-p2-name" class="font-bold text-slate-200 text-xs">Người 2</div>
+            <div id="cp-p2-streak" class="text-xl font-black text-amber-400 my-1">🔥 0 ngày</div>
+            <div id="cp-p2-cal" class="text-[11px] text-slate-400">0 kcal</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- VIEW 2: KHỦNG 30 NGÀY / LỊCH -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="view-plan30" class="app-view hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-100">📅 Hành Trình 30 Ngày</h2>
+          <p class="text-xs text-slate-400">Từng ngày kiên trì tích tiểu thành đại</p>
+        </div>
+      </div>
+
+      <!-- Grid 30 ngày -->
+      <div id="plan-days-grid" class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-2.5">
+        <!-- Generates 30 cards JS -->
+      </div>
+
+      <!-- Chi tiết ngày được chọn -->
+      <div id="day-detail-card" class="bg-slate-900 p-5 rounded-3xl border border-slate-800 hidden space-y-3">
+        <h3 id="day-detail-title" class="font-bold text-slate-100 text-lg">Chi tiết Ngày X</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div class="bg-slate-950 p-3 rounded-xl">
+            <span class="text-slate-400">Calories:</span>
+            <div id="day-det-cal" class="font-bold text-slate-200 text-sm">--</div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl">
+            <span class="text-slate-400">Protein:</span>
+            <div id="day-det-prot" class="font-bold text-slate-200 text-sm">--</div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl">
+            <span class="text-slate-400">Vận động:</span>
+            <div id="day-det-ex" class="font-bold text-slate-200 text-sm">--</div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl">
+            <span class="text-slate-400">Nước & Ngủ:</span>
+            <div id="day-det-ws" class="font-bold text-slate-200 text-sm">--</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- VIEW 3: ĂN UỐNG / DI NH DƯỠNG -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="view-food" class="app-view hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-100">🍚 Nhật Ký Ăn Uống</h2>
+          <p class="text-xs text-slate-400">Ghi lại bữa ăn & kiểm soát năng lượng</p>
+        </div>
+      </div>
+
+      <!-- Form Thêm Món Ăn -->
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-4">
+        <h3 class="font-bold text-slate-100 text-sm flex items-center gap-2">
+          <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i> Thêm Món Ăn Vừa Dung Nạp
+        </h3>
+
+        <!-- Chọn Món Nhanh -->
+        <div>
+          <label class="block text-xs text-slate-400 mb-1.5 font-medium">Món phổ biến chọn nhanh:</label>
+          <div class="flex flex-wrap gap-1.5" id="quick-food-tags">
+            <!-- Rendered JS -->
+          </div>
+        </div>
+
+        <form onsubmit="addFoodLog(event)" class="space-y-3 pt-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Tên món ăn</label>
+              <input type="text" id="food-name" required placeholder="Ví dụ: Cơm gà xối mỡ" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Khối lượng (gram)</label>
+              <input type="number" id="food-grams" value="200" required class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 focus:outline-none focus:border-flame-500">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Chế biến</label>
+              <select id="food-method" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+                <option value="boiled">Luộc / Hấp</option>
+                <option value="grilled">Nướng</option>
+                <option value="stir">Xào</option>
+                <option value="fried">Chiên / Rán</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Lượng dầu ăn</label>
+              <select id="food-oil" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+                <option value="0">Không / Rất ít</option>
+                <option value="5">Vừa phải (~5g)</option>
+                <option value="12">Nhiều dầu (~12g)</option>
+              </select>
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <label class="block text-xs text-slate-400 mb-1">Bữa ăn</label>
+              <select id="food-meal-type" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+                <option value="Sáng">🌅 Bữa Sáng</option>
+                <option value="Trưa">☀️ Bữa Trưa</option>
+                <option value="Tối">🌙 Bữa Tối</option>
+                <option value="Phụ">🍎 Bữa Phụ</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition text-sm flex items-center justify-center gap-2">
+            <i data-lucide="plus" class="w-4 h-4"></i> Lưu Vào Bữa Ăn
+          </button>
+        </form>
+      </div>
+
+      <!-- Gợi ý Bữa Ăn Thông Minh dựa trên Calo Còn Lại -->
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-3">
+        <h3 class="font-bold text-slate-100 text-sm flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i> Gợi Ý Bữa Ăn Tiếp Theo
+        </h3>
+        <div id="smart-food-suggestions" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Danh sách món đã ăn hôm nay -->
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-3">
+        <h3 class="font-bold text-slate-100 text-sm">Bữa Ăn Hôm Nay</h3>
+        <div id="today-food-list" class="space-y-2">
+          <!-- Rendered JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- VIEW 4: VẬN ĐỘNG / TẬP LUYỆN -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="view-exercise" class="app-view hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-100">🏃 Vận Động & Tập Luyện</h2>
+          <p class="text-xs text-slate-400">Đốt cháy calo & giữ cơ thể dẻo dai</p>
+        </div>
+      </div>
+
+      <!-- Form Thêm Bài Tập -->
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-4">
+        <h3 class="font-bold text-slate-100 text-sm flex items-center gap-2">
+          <i data-lucide="plus-circle" class="w-4 h-4 text-blue-400"></i> Ghi Nhận Buổi Tập
+        </h3>
+
+        <form onsubmit="addExerciseLog(event)" class="space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Loại hoạt động</label>
+              <select id="ex-type" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+                <option value="walk">🚶 Đi bộ</option>
+                <option value="run">🏃 Chạy bộ</option>
+                <option value="gym">🏋️ Gym / Tạ</option>
+                <option value="cycle">🚴 Đạp xe</option>
+                <option value="badminton">🏸 Cầu lông / Tennis</option>
+                <option value="football">⚽ Đá bóng</option>
+                <option value="yoga">🧘 Yoga / Tĩnh tâm</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Thời gian (Phút)</label>
+              <input type="number" id="ex-duration" value="30" required min="5" max="300" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Số bước (Đi bộ/chạy)</label>
+              <input type="number" id="ex-steps" placeholder="Ví dụ: 5000" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition text-sm flex items-center justify-center gap-2">
+            <i data-lucide="check" class="w-4 h-4"></i> Lưu Bài Tập
+          </button>
+        </form>
+      </div>
+
+      <!-- Danh sách bài tập hôm nay -->
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-3">
+        <h3 class="font-bold text-slate-100 text-sm">Nhật Ký Tập Hôm Nay</h3>
+        <div id="today-ex-list" class="space-y-2">
+          <!-- Rendered JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- VIEW 5: NƯỚC & GIẤC NGỦ -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="view-water-sleep" class="app-view hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-100">💧 Nước & Giấc Ngủ</h2>
+          <p class="text-xs text-slate-400">Phục hồi & cân bằng sinh học</p>
+        </div>
+      </div>
+
+      <!-- Water Tracker -->
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-slate-100 text-sm flex items-center gap-2">
+            <i data-lucide="droplet" class="w-4 h-4 text-cyan-400"></i> Theo Dõi Nước Uống (250ml/ly)
+          </h3>
+          <span id="water-count-text" class="text-xs font-bold text-cyan-400">0 / 8 ly</span>
+        </div>
+
+        <div id="water-cups-grid" class="grid grid-cols-4 sm:grid-cols-8 gap-3">
+          <!-- 8 Cup icons rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Sleep Tracker -->
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-4">
+        <h3 class="font-bold text-slate-100 text-sm flex items-center gap-2">
+          <i data-lucide="moon" class="w-4 h-4 text-indigo-400"></i> Theo Dõi Giấc Ngủ
+        </h3>
+
+        <form onsubmit="saveSleepLog(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Ngủ lúc</label>
+            <input type="time" id="sleep-start" value="23:00" required class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+          </div>
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Thức dậy lúc</label>
+            <input type="time" id="sleep-end" value="06:30" required class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+          </div>
+          <button type="submit" class="py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition text-sm">
+            Cập Nhật Giấc Ngủ
+          </button>
+        </form>
+
+        <div id="sleep-status-result" class="p-3 bg-slate-950 rounded-2xl text-xs text-slate-300">
+          Chưa cập nhật giấc ngủ hôm nay.
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- VIEW 6: CÂN NẶNG & TIẾN TRÌNH -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="view-weight" class="app-view hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-100">⚖️ Theo Dõi Cân Nặng</h2>
+          <p class="text-xs text-slate-400">Ghi lại chỉ số để thấy rõ sự chuyển biến</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-4">
+        <form onsubmit="addWeightLog(event)" class="flex gap-3">
+          <input type="number" step="0.1" id="weight-input" placeholder="Nhập cân nặng hôm nay (kg)" required class="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+          <button type="submit" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-sm transition">
+            Lưu Cân Nặng
+          </button>
+        </form>
+      </div>
+
+      <!-- Biểu đồ dạng Bar visual đơn giản -->
+      <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 space-y-3">
+        <h3 class="font-bold text-slate-100 text-sm">Lịch Sử Cân Nặng Gần Đây</h3>
+        <div id="weight-history-list" class="space-y-2">
+          <!-- Rendered JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- VIEW 7: THÀNH TÍCH & HUY HIỆU -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="view-achievements" class="app-view hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-100">🏆 Bảng Thành Tích</h2>
+        <p class="text-xs text-slate-400">Thu thập huy hiệu & vinh danh sự kiên trì</p>
+      </div>
+
+      <div id="badges-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <!-- Rendered JS -->
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- VIEW 8: BÁO CÁO TỔNG KẾT 30 NGÀY -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="view-report" class="app-view hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-100">📊 Báo Cáo & Phân Tích</h2>
+        <p class="text-xs text-slate-400">Tổng quan kết quả rèn luyện</p>
+      </div>
+
+      <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 space-y-4">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          <div class="bg-slate-950 p-4 rounded-2xl">
+            <div class="text-xs text-slate-400">Tổng Calo Trung Bình</div>
+            <div id="rep-avg-cal" class="text-xl font-bold text-emerald-400 my-1">-- kcal</div>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-2xl">
+            <div class="text-xs text-slate-400">Số Ngày Đạt Protein</div>
+            <div id="rep-prot-days" class="text-xl font-bold text-flame-400 my-1">0/30</div>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-2xl">
+            <div class="text-xs text-slate-400">Tổng Quãng Đường Walk</div>
+            <div id="rep-total-dist" class="text-xl font-bold text-blue-400 my-1">0 km</div>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-2xl">
+            <div class="text-xs text-slate-400">Uống Đủ Nước</div>
+            <div id="rep-water-days" class="text-xl font-bold text-cyan-400 my-1">0/30 ngày</div>
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+          <h4 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔥 Lời Nhận Xét Từ Keep Flame</h4>
+          <p id="rep-analysis-text" class="text-xs text-slate-300 leading-relaxed">
+            Đang phân tích dữ liệu rèn luyện của bạn...
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- VIEW 9: HỒ SƠ & CÀI ĐẶT -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="view-profile" class="app-view hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-100">👤 Hồ Sơ Cá Nhân</h2>
+        <p class="text-xs text-slate-400">Quản lý thông tin & thiết lập lại mục tiêu</p>
+      </div>
+
+      <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 max-w-xl space-y-4">
+        <form onsubmit="updateProfileInApp(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Họ Tên / Nickname</label>
+            <input type="text" id="edit-prof-name" required class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Chiều cao (cm)</label>
+              <input type="number" id="edit-prof-height" required class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Cân nặng (kg)</label>
+              <input type="number" step="0.1" id="edit-prof-weight" required class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Mức độ vận động</label>
+            <select id="edit-prof-act" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100">
+              <option value="1.2">🛋️ Ít vận động</option>
+              <option value="1.375">🚶 Vận động nhẹ</option>
+              <option value="1.55">🏃 Vận động vừa</option>
+              <option value="1.725">🏋️ Vận động nhiều</option>
+              <option value="1.9">🔥 Rất năng động</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 bg-flame-600 hover:bg-flame-500 text-white font-bold rounded-xl text-sm transition">
+            Lưu Thay Đổi Hồ Sơ
+          </button>
+        </form>
+
+        <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+          <button onclick="resetAllData()" class="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs font-semibold rounded-xl border border-rose-500/30 transition">
+            🗑️ Xóa & Đặt Lại Tất Cả Dữ Liệu
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT LOGIC XỬ LÝ OFF-LINE TOÀN BỘ UNG DỤNG -->
+  <!-- ========================================================================= -->
+  <script>
+    /* KEY LƯU LOCALSTORAGE */
+    const STORAGE_KEY = 'keep_flame_db';
+
+    /* STATE TOÀN BỤC DỮ LIỆU */
+    let appState = {
+      mode: 'single', // 'single' hoặc 'couple'
+      activeProfile: 'p1', // 'p1' hoặc 'p2'
+      profiles: {
+        p1: null,
+        p2: null
+      },
+      dailyLogs: {} // Key format: YYYY-MM-DD_p1
+    };
+
+    /* MÓN ĂN GỢI Ý SẴN */
+    const PRESET_FOODS = [
+      { name: "Cơm trắng", cal: 130, prot: 2.7 },
+      { name: "Ức gà luộc", cal: 165, prot: 31 },
+      { name: "Trứng ốp la", cal: 155, prot: 13 },
+      { name: "Đậu hũ hấp", cal: 76, prot: 8 },
+      { name: "Thịt bò xào", cal: 250, prot: 26 },
+      { name: "Chuối chín", cal: 89, prot: 1.1 },
+      { name: "Sữa chua", cal: 59, prot: 3.5 },
+      { name: "Phở bò", cal: 450, prot: 22 }
+    ];
+
+    /* KHỞI TẠO APP KHI LÊN PAGE */
+    window.onload = function() {
+      // Stream Lucide Icons
+      lucide.createIcons();
+      
+      // Load dữ liệu từ LocalStorage
+      loadFromStorage();
+
+      // Kiểm tra trạng thái Onboarding
+      if (!appState.profiles.p1) {
+        document.getElementById('onboarding-screen').classList.remove('hidden');
+      } else {
+        document.getElementById('onboarding-screen').classList.add('hidden');
+        initDashboard();
+      }
+    };
+
+    /* HÀM LƯU / TẢI LOCALSTORAGE */
+    function saveToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    }
+
+    function loadFromStorage() {
+      const data = localStorage.getItem(STORAGE_KEY);
+      if (data) {
+        try {
+          appState = JSON.parse(data);
+        } catch (e) {
+          console.error("Lỗi parse LocalStorage data", e);
+        }
+      }
+    }
+
+    /* TÍNH TOÁN BMI / BMR / TDEE FUNCTION */
+    function calculateMetrics(profile) {
+      if (!profile) return { bmi: 0, bmr: 0, tdee: 0, targetCal: 0, targetProtein: 0 };
+      
+      const w = parseFloat(profile.weight);
+      const h = parseFloat(profile.height);
+      const a = parseInt(profile.age);
+      const act = parseFloat(profile.activity);
+
+      // BMI
+      const hM = h / 100;
+      const bmi = (w / (hM * hM)).toFixed(1);
+
+      // BMR (Mifflin-St Jeor)
+      let bmr = 0;
+      if (profile.gender === 'male') {
+        bmr = 10 * w + 6.25 * h - 5 * a + 5;
+      } else {
+        bmr = 10 * w + 6.25 * h - 5 * a - 161;
+      }
+
+      // TDEE
+      const tdee = Math.round(bmr * act);
+
+      // Target Calo & Protein
+      let targetCal = tdee;
+      let targetProtein = Math.round(w * 1.6); // Mặc định 1.6g/kg
+
+      if (profile.goalType === 'lose') {
+        targetCal = tdee - 500; // Giảm ~0.5kg/tuần
+        targetProtein = Math.round(w * 1.8);
+      } else if (profile.goalType === 'gain') {
+        targetCal = tdee + 300;
+        targetProtein = Math.round(w * 1.7);
+      }
+
+      return { bmi, bmr: Math.round(bmr), tdee, targetCal, targetProtein };
+    }
+
+    /* LOGIC CHUYỂN BƯỚC ONBOARDING */
+    let tempUsageMode = 'single';
+    let currentOnboardProfile = 'p1';
+
+    function selectUsageMode(mode) {
+      tempUsageMode = mode;
+      appState.mode = mode;
+      
+      document.getElementById('onboard-step-1').classList.add('hidden');
+      document.getElementById('onboard-step-2').classList.remove('hidden');
+      
+      if (mode === 'couple') {
+        document.getElementById('onboard-profile-badge').innerText = 'Người 1';
+      } else {
+        document.getElementById('onboard-profile-badge').innerText = 'Hồ sơ cá nhân';
+      }
+    }
+
+    function toggleGoalInputs() {
+      const goalType = document.getElementById('prof-goal-type').value;
+      const container = document.getElementById('goal-weight-container');
+      if (goalType === 'maintain') {
+        container.classList.add('hidden');
+      } else {
+        container.classList.remove('hidden');
+      }
+    }
+
+    function saveProfileOnboarding(e) {
+      e.preventDefault();
+
+      const profileData = {
+        name: document.getElementById('prof-name').value,
+        gender: document.getElementById('prof-gender').value,
+        age: parseInt(document.getElementById('prof-age').value),
+        height: parseFloat(document.getElementById('prof-height').value),
+        weight: parseFloat(document.getElementById('prof-weight').value),
+        activity: parseFloat(document.getElementById('prof-activity').value),
+        goalType: document.getElementById('prof-goal-type').value,
+        targetWeight: parseFloat(document.getElementById('prof-target-weight').value || document.getElementById('prof-weight').value),
+        targetDays: parseInt(document.getElementById('prof-target-days').value || 30),
+        budget: document.getElementById('prof-budget').value
+      };
+
+      appState.profiles[currentOnboardProfile] = profileData;
+
+      if (tempUsageMode === 'couple' && currentOnboardProfile === 'p1') {
+        // Chuyển sang tạo hồ sơ cho Người 2
+        currentOnboardProfile = 'p2';
+        document.getElementById('onboard-profile-title').innerText = 'Thiết lập Hồ sơ Người 2';
+        document.getElementById('onboard-profile-badge').innerText = 'Người 2';
+        document.getElementById('onboard-form').reset();
+        return;
+      }
+
+      // Hoàn thành Onboarding
+      saveToStorage();
+      document.getElementById('onboarding-screen').classList.add('hidden');
+      initDashboard();
+    }
+
+    function initDashboard() {
+      // Cấu hình thanh chọn switch 2 người nếu active
+      if (appState.mode === 'couple') {
+        document.getElementById('sidebar-profile-switch').classList.remove('hidden');
+        document.getElementById('mob-profile-switch').classList.remove('hidden');
+        document.getElementById('couple-sync-widget').classList.remove('hidden');
+        document.getElementById('dash-couple-tag').classList.remove('hidden');
+      } else {
+        document.getElementById('sidebar-profile-switch').classList.add('hidden');
+        document.getElementById('mob-profile-switch').classList.add('hidden');
+        document.getElementById('couple-sync-widget').classList.add('hidden');
+        document.getElementById('dash-couple-tag').classList.add('hidden');
+      }
+
+      renderProfileData();
+      renderQuickFoodTags();
+      render30DaysGrid();
+      renderBadges();
+      lucide.createIcons();
+    }
+
+    /* ĐỔ DỮ LIỆU TỪ STATE LÊN DASHBOARD */
+    function renderProfileData() {
+      const pKey = appState.activeProfile;
+      const profile = appState.profiles[pKey];
+      if (!profile) return;
+
+      const metrics = calculateMetrics(profile);
+      const todayKey = getTodayKey();
+      const todayLog = getOrCreateTodayLog();
+
+      // UI Banner
+      document.getElementById('dash-greeting-name').innerText = `Xin chào, ${profile.name}! 🔥`;
+
+      // UI Indicators
+      document.getElementById('dash-bmi-val').innerText = metrics.bmi;
+      document.getElementById('dash-bmr-val').innerHTML = `${metrics.bmr} <span class="text-xs font-normal text-slate-400">kcal</span>`;
+      document.getElementById('dash-tdee-val').innerHTML = `${metrics.tdee} <span class="text-xs font-normal text-slate-400">kcal</span>`;
+      document.getElementById('dash-target-cal').innerHTML = `${metrics.targetCal} <span class="text-xs font-normal text-slate-400">kcal</span>`;
+
+      // BMI Status Badge
+      const bmiBadge = document.getElementById('dash-bmi-badge');
+      if (metrics.bmi < 18.5) {
+        bmiBadge.innerText = 'Gầy';
+        bmiBadge.className = 'mt-2 text-[11px] font-semibold px-2 py-0.5 rounded-md inline-block bg-blue-500/20 text-blue-400';
+      } else if (metrics.bmi < 23) {
+        bmiBadge.innerText = 'Bình thường';
+        bmiBadge.className = 'mt-2 text-[11px] font-semibold px-2 py-0.5 rounded-md inline-block bg-emerald-500/20 text-emerald-400';
+      } else {
+        bmiBadge.innerText = 'Thừa cân / Béo phì';
+        bmiBadge.className = 'mt-2 text-[11px] font-semibold px-2 py-0.5 rounded-md inline-block bg-rose-500/20 text-rose-400';
+      }
+
+      // Today Progress Bars
+      document.getElementById('dash-cal-num').innerText = `${todayLog.calories} / ${metrics.targetCal} kcal`;
+      const calPercent = Math.min(100, Math.round((todayLog.calories / metrics.targetCal) * 100));
+      document.getElementById('dash-cal-bar').style.width = `${calPercent}%`;
+
+      document.getElementById('dash-prot-num').innerText = `${todayLog.protein} / ${metrics.targetProtein} g`;
+      const protPercent = Math.min(100, Math.round((todayLog.protein / metrics.targetProtein) * 100));
+      document.getElementById('dash-prot-bar').style.width = `${protPercent}%`;
+
+      document.getElementById('dash-water-num').innerText = `${todayLog.water} / 8 ly`;
+      const waterPercent = Math.min(100, Math.round((todayLog.water / 8) * 100));
+      document.getElementById('dash-water-bar').style.width = `${waterPercent}%`;
+
+      // Render Checklist
+      renderChecklist(todayLog);
+
+      // Render Water Cups
+      renderWaterCups(todayLog.water);
+
+      // Render Food & Exercise Lists
+      renderFoodList(todayLog);
+      renderExerciseList(todayLog);
+
+      // Render Couple Widget (nếu có)
+      if (appState.mode === 'couple') {
+        const p1 = appState.profiles.p1;
+        const p2 = appState.profiles.p2;
+        if (p1) {
+          document.getElementById('cp-p1-name').innerText = p1.name;
+          document.getElementById('cp-p1-cal').innerText = `${getTodayLogFor('p1').calories} kcal`;
+        }
+        if (p2) {
+          document.getElementById('cp-p2-name').innerText = p2.name;
+          document.getElementById('cp-p2-cal').innerText = `${getTodayLogFor('p2').calories} kcal`;
+        }
+      }
+    }
+
+    /* ĐỔI HỒ SƠ TỪ P1 <-> P2 */
+    function switchProfile(pKey) {
+      appState.activeProfile = pKey;
+      saveToStorage();
+
+      // Update button classes
+      const isP1 = pKey === 'p1';
+      document.getElementById('switch-btn-p1').className = isP1 ? 'py-1.5 rounded-lg text-center transition bg-flame-500 text-white shadow' : 'py-1.5 rounded-lg text-center text-slate-400 hover:text-slate-200 transition';
+      document.getElementById('switch-btn-p2').className = !isP1 ? 'py-1.5 rounded-lg text-center transition bg-flame-500 text-white shadow' : 'py-1.5 rounded-lg text-center text-slate-400 hover:text-slate-200 transition';
+      
+      document.getElementById('mob-switch-p1').className = isP1 ? 'px-2.5 py-1 rounded-md bg-flame-500 text-white' : 'px-2.5 py-1 rounded-md text-slate-400';
+      document.getElementById('mob-switch-p2').className = !isP1 ? 'px-2.5 py-1 rounded-md bg-flame-500 text-white' : 'px-2.5 py-1 rounded-md text-slate-400';
+
+      renderProfileData();
+    }
+
+    /* NAVIGATION CHUYỂN TRANG (SPA) */
+    function navTo(viewId) {
+      document.querySelectorAll('.app-view').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`view-${viewId}`).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active', 'bg-slate-800', 'text-white'));
+      const activeNav = document.getElementById(`nav-${viewId}`);
+      if (activeNav) activeNav.classList.add('active', 'bg-slate-800', 'text-white');
+
+      document.querySelectorAll('.mob-nav-btn').forEach(btn => btn.classList.remove('text-flame-400', 'text-emerald-400', 'text-blue-400', 'text-amber-400', 'text-slate-200'));
+      const activeMob = document.getElementById(`mob-nav-${viewId}`);
+      if (activeMob) activeMob.classList.add('text-flame-400');
+
+      lucide.createIcons();
+    }
+
+    /* TẠO KEY BẢN GHI NGÀY */
+    function getTodayKey() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function getOrCreateTodayLog() {
+      return getTodayLogFor(appState.activeProfile);
+    }
+
+    function getTodayLogFor(profileKey) {
+      const key = `${getTodayKey()}_${profileKey}`;
+      if (!appState.dailyLogs[key]) {
+        appState.dailyLogs[key] = {
+          calories: 0,
+          protein: 0,
+          water: 0,
+          sleepHours: 0,
+          foods: [],
+          exercises: [],
+          checklist: [false, false, false, false, false]
+        };
+      }
+      return appState.dailyLogs[key];
+    }
+
+    /* CHI TIẾT MÓN ĂN & DI NH DƯỠNG */
+    function renderQuickFoodTags() {
+      const container = document.getElementById('quick-food-tags');
+      container.innerHTML = PRESET_FOODS.map(item => `
+        <button type="button" onclick="selectQuickFood('${item.name}', ${item.cal}, ${item.prot})" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg transition border border-slate-700">
+          ${item.name}
+        </button>
+      `).join('');
+    }
+
+    function selectQuickFood(name, cal, prot) {
+      document.getElementById('food-name').value = name;
+    }
+
+    function addFoodLog(e) {
+      e.preventDefault();
+      const log = getOrCreateTodayLog();
+
+      const name = document.getElementById('food-name').value;
+      const grams = parseFloat(document.getElementById('food-grams').value);
+      const oilGrams = parseFloat(document.getElementById('food-oil').value);
+      const mealType = document.getElementById('food-meal-type').value;
+
+      // Ước tính dinh dưỡng
+      let baseCal = (grams / 100) * 120; // Trung bình 120cal/100g
+      let baseProt = (grams / 100) * 8;   // Trung bình 8g prot/100g
+      
+      // Calo từ dầu ăn thêm
+      const oilCal = oilGrams * 9;
+      const totalCal = Math.round(baseCal + oilCal);
+      const totalProt = Math.round(baseProt);
+
+      log.foods.push({ name, grams, mealType, cal: totalCal, prot: totalProt });
+      log.calories += totalCal;
+      log.protein += totalProt;
+
+      saveToStorage();
+      renderProfileData();
+      alert(`Đã thêm món "${name}" (+${totalCal} kcal)!`);
+    }
+
+    function renderFoodList(log) {
+      const container = document.getElementById('today-food-list');
+      if (!log.foods || log.foods.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500">Chưa ghi nhận món ăn nào hôm nay.</p>`;
+        return;
+      }
+
+      container.innerHTML = log.foods.map(item => `
+        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs">
+          <div>
+            <div class="font-bold text-slate-200">${item.name} (${item.grams}g)</div>
+            <div class="text-[10px] text-slate-400">${item.mealType}</div>
+          </div>
+          <div class="text-right">
+            <span class="font-bold text-emerald-400">+${item.cal} kcal</span>
+            <div class="text-[10px] text-flame-400">${item.prot}g Protein</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* VẬN ĐỘNG LOGIC */
+    function addExerciseLog(e) {
+      e.preventDefault();
+      const log = getOrCreateTodayLog();
+
+      const type = document.getElementById('ex-type').value;
+      const duration = parseInt(document.getElementById('ex-duration').value);
+      const steps = parseInt(document.getElementById('ex-steps').value || 0);
+
+      // Ước tính tiêu hao calo
+      let calBurned = duration * 6; // ~6 kcal/phút
+      if (type === 'run') calBurned = duration * 10;
+      if (type === 'walk') calBurned = duration * 4;
+
+      log.exercises.push({ type, duration, steps, calBurned });
+      
+      saveToStorage();
+      renderProfileData();
+      alert(`Đã lưu bài tập (+${calBurned} kcal tiêu hao)!`);
+    }
+
+    function renderExerciseList(log) {
+      const container = document.getElementById('today-ex-list');
+      if (!log.exercises || log.exercises.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500">Chưa ghi nhận bài tập nào hôm nay.</p>`;
+        return;
+      }
+
+      container.innerHTML = log.exercises.map(item => `
+        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs">
+          <div>
+            <div class="font-bold text-slate-200">${item.type.toUpperCase()} - ${item.duration} Phút</div>
+            ${item.steps ? `<div class="text-[10px] text-blue-400">${item.steps} bước đi</div>` : ''}
+          </div>
+          <div class="font-bold text-blue-400">-${item.calBurned} kcal</div>
+        </div>
+      `).join('');
+    }
+
+    /* NƯỚC & NGỦ LOGIC */
+    function renderWaterCups(currentCups) {
+      const container = document.getElementById('water-cups-grid');
+      container.innerHTML = '';
+      for (let i = 1; i <= 8; i++) {
+        const isFilled = i <= currentCups;
+        container.innerHTML += `
+          <button onclick="toggleWaterCup(${i})" class="p-3 rounded-2xl flex flex-col items-center justify-center border transition ${isFilled ? 'bg-cyan-500/20 border-cyan-500 text-cyan-400' : 'bg-slate-950 border-slate-800 text-slate-600 hover:text-slate-400'}">
+            <i data-lucide="droplet" class="w-6 h-6 mb-1 ${isFilled ? 'fill-cyan-400' : ''}"></i>
+            <span class="text-[10px] font-bold">${i * 250}ml</span>
+          </button>
+        `;
+      }
+      document.getElementById('water-count-text').innerText = `${currentCups} / 8 ly (${currentCups * 250}ml)`;
+      lucide.createIcons();
+    }
+
+    function toggleWaterCup(cupIndex) {
+      const log = getOrCreateTodayLog();
+      log.water = cupIndex;
+      saveToStorage();
+      renderProfileData();
+    }
+
+    function saveSleepLog(e) {
+      e.preventDefault();
+      const start = document.getElementById('sleep-start').value;
+      const end = document.getElementById('sleep-end').value;
+
+      // Tính giờ đơn giản
+      const sH = parseInt(start.split(':')[0]);
+      const eH = parseInt(end.split(':')[0]);
+      let diff = eH - sH;
+      if (diff < 0) diff += 24;
+
+      const log = getOrCreateTodayLog();
+      log.sleepHours = diff;
+
+      saveToStorage();
+      document.getElementById('sleep-status-result').innerText = `✅ Đã lưu: ${diff} tiếng ngủ đêm qua.`;
+    }
+
+    /* CHECKLIST HOÀN THÀNH */
+    const CHECKLIST_ITEMS = [
+      "Uống đủ 2L nước (8 ly)",
+      "Đạt mục tiêu Protein",
+      "Ăn ít nhất 1 khẩu phần rau xanh",
+      "Vận động / Đi bộ tối thiểu 30p",
+      "Ngủ đủ 7 - 8 tiếng"
+    ];
+
+    function renderChecklist(log) {
+      const container = document.getElementById('daily-checklist');
+      container.innerHTML = CHECKLIST_ITEMS.map((item, idx) => {
+        const isChecked = log.checklist && log.checklist[idx];
+        return `
+          <label class="flex items-center gap-3 p-3 bg-slate-950 rounded-2xl border border-slate-800 cursor-pointer hover:border-slate-700 transition">
+            <input type="checkbox" onchange="toggleChecklistItem(${idx})" ${isChecked ? 'checked' : ''} class="w-4 h-4 accent-flame-500 rounded">
+            <span class="text-xs font-medium ${isChecked ? 'line-through text-slate-500' : 'text-slate-200'}">${item}</span>
+          </label>
+        `;
+      }).join('');
+    }
+
+    function toggleChecklistItem(index) {
+      const log = getOrCreateTodayLog();
+      if (!log.checklist) log.checklist = [false, false, false, false, false];
+      log.checklist[index] = !log.checklist[index];
+      saveToStorage();
+    }
+
+    /* RENDER GRID 30 NGÀY */
+    function render30DaysGrid() {
+      const container = document.getElementById('plan-days-grid');
+      container.innerHTML = '';
+      for (let i = 1; i <= 30; i++) {
+        const isToday = i === 1; // Demo ngày 1
+        container.innerHTML += `
+          <button onclick="showDayDetail(${i})" class="p-3 rounded-2xl border flex flex-col items-center justify-center gap-1 transition ${isToday ? 'bg-flame-500/20 border-flame-500 text-flame-400 font-bold' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'}">
+            <span class="text-[10px] uppercase">Ngày</span>
+            <span class="text-base">${i}</span>
+          </button>
+        `;
+      }
+    }
+
+    function showDayDetail(dayNum) {
+      const card = document.getElementById('day-detail-card');
+      card.classList.remove('hidden');
+      document.getElementById('day-detail-title').innerText = `Chi tiết Ngày ${dayNum}`;
+      document.getElementById('day-det-cal').innerText = `1,420 kcal`;
+      document.getElementById('day-det-prot').innerText = `82 g`;
+      document.getElementById('day-det-ex').innerText = `45 phút đi bộ`;
+      document.getElementById('day-det-ws').innerText = `6 ly / 7.5h ngủ`;
+    }
+
+    /* HUY HIỆU THÀNH TÍCH */
+    const BADGES = [
+      { id: "st3", name: "🔥 Streak 3 Ngày", desc: "Giữ lửa liên tục 3 ngày" },
+      { id: "st7", name: "🔥 Master 7 Ngày", desc: "Giữ lửa liên tục 7 ngày" },
+      { id: "prot", name: "🥩 Protein Champion", desc: "Đạt mốc protein 5 ngày" },
+      { id: "water", name: "💧 Thủy Thần", desc: "Uống đủ 8 ly nước trong ngày" }
+    ];
+
+    function renderBadges() {
+      const container = document.getElementById('badges-grid');
+      container.innerHTML = BADGES.map(b => `
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex items-center gap-3">
+          <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl text-2xl">🏆</div>
+          <div>
+            <div class="font-bold text-slate-200 text-xs">${b.name}</div>
+            <div class="text-[10px] text-slate-400">${b.desc}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* TÍNH NĂNG XUẤT / NHẬP DỮ LIỆU JSON */
+    function exportJSON() {
+      const jsonStr = JSON.stringify(appState, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `keep_flame_backup_${getTodayKey()}.json`;
+      a.click();
+    }
+
+    function triggerImportJSON() {
+      document.getElementById('json-import-file').click();
+    }
+
+    function handleImportJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const importedData = JSON.parse(evt.target.result);
+          if (importedData.profiles) {
+            appState = importedData;
+            saveToStorage();
+            alert("✅ Khôi phục dữ liệu thành công!");
+            location.reload();
+          } else {
+            alert("❌ File JSON không đúng định dạng Keep Flame!");
+          }
+        } catch (err) {
+          alert("❌ Không thể đọc file JSON!");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetAllData() {
+      if (confirm("Bạn có chắc chắn muốn đặt lại toàn bộ dữ liệu? Dữ liệu đã xóa không thể khôi phục!")) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    }
+  </script>
+</body>
+</html>
